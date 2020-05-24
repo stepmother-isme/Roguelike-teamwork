@@ -24,6 +24,8 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "Knight.h"
+
 
 USING_NS_CC;
 
@@ -32,14 +34,12 @@ Scene* HelloWorld::createScene()
     return HelloWorld::create();
 }
 
-// Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
-// on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
     //////////////////////////////
@@ -52,82 +52,104 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	//以下创建动画的代码参考自：https://blog.csdn.net/congcongjoy/article/details/8753452
+	//有改动
+	Vector<SpriteFrame*> framesUp;
+	Vector<SpriteFrame*> framesDown;
+	Vector<SpriteFrame*> framesRight;
+	Vector<SpriteFrame*> framesLeft;
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	CCSpriteFrame* frame = NULL;
+	CCSpriteFrame* frameOriginal = NULL;
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
-    }
+	CCTexture2D* playerRight = CCTextureCache::sharedTextureCache()->addImage("rightDir.png");
+	frame = CCSpriteFrame::createWithTexture(playerRight, CCRectMake(0,0,30,60));
+	framesRight.pushBack(frame);
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
+	CCTexture2D* playerLeft = CCTextureCache::sharedTextureCache()->addImage("leftDir.png");
+	frame = CCSpriteFrame::createWithTexture(playerLeft, CCRectMake(0, 0, 30, 60));
+	framesLeft.pushBack(frame);
 
-    /////////////////////////////
-    // 3. add your codes below...
+	CCTexture2D* playerDown = CCTextureCache::sharedTextureCache()->addImage("downDir.png");
+	frame = CCSpriteFrame::createWithTexture(playerDown, CCRectMake(0, 0, 30, 60));
+	framesDown.pushBack(frame);
+	frameOriginal = frame;
 
-    // add a label shows "Hello World"
-    // create and initialize a label
+	CCTexture2D* playerUp = CCTextureCache::sharedTextureCache()->addImage("upDir.png");
+	frame = CCSpriteFrame::createWithTexture(playerUp, CCRectMake(0, 0, 30, 60));
+	framesUp.pushBack(frame);
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
 
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+	//通过数组创建帧序列
+	CCAnimation* animitionUp = CCAnimation::createWithSpriteFrames(framesUp, 0.1f);
+	CCAnimation* animitionDown = CCAnimation::createWithSpriteFrames(framesDown, 0.1f);
+	CCAnimation* animitionLeft = CCAnimation::createWithSpriteFrames(framesLeft, 0.1f);
+	CCAnimation* animitionRight = CCAnimation::createWithSpriteFrames(framesRight, 0.1f);
 
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
+	//通过帧序列动画和移动创建上人物下左右移动动作
+	auto actionUp = CCSpawn::createWithTwoActions(CCAnimate::create(animitionUp), CCMoveBy::create(0.4f, ccp(0, 32)));
+	auto actionDown = CCSpawn::createWithTwoActions(CCAnimate::create(animitionDown), CCMoveBy::create(0.4f, ccp(0, -32)));
+	auto actionLeft = CCSpawn::createWithTwoActions(CCAnimate::create(animitionLeft), CCMoveBy::create(0.4f, ccp(-32, 0)));
+	auto actionRight = CCSpawn::createWithTwoActions(CCAnimate::create(animitionRight), CCMoveBy::create(0.4f, ccp(32, 0)));
+
+	actionUp->retain();
+	actionDown->retain();
+	actionLeft->retain();
+	actionRight->retain();
+
+	//创建角色
+	auto hero = Sprite::createWithSpriteFrame(frameOriginal);
+	hero->setPosition(Vec2(visibleSize.width / 2, 70));
+	this->addChild(hero);
+
+
+	//键盘事件的监听器，有什么想法可以改改，目前HelloWorld水平
+	auto Listener = EventListenerKeyboard::create();
+	Listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
+	{
+		switch (keycode)
+		{
+		case EventKeyboard::KeyCode::KEY_W:
+		{
+			auto actionUp = Spawn::createWithTwoActions(CCAnimate::create(animitionUp), MoveBy::create(0.4f, Vec2(0, 50)));
+			actionUp->retain();
+			hero->runAction(actionUp);
+		}
+		break;
+		case EventKeyboard::KeyCode::KEY_D:
+		{
+			auto actionRight = Spawn::createWithTwoActions(CCAnimate::create(animitionRight), MoveBy::create(0.4f, Vec2(50,0)));
+			actionRight->retain();
+			hero->runAction(actionRight);
+		}
+		break;
+		case EventKeyboard::KeyCode::KEY_A:
+		{
+			auto actionLeft = Spawn::createWithTwoActions(CCAnimate::create(animitionLeft), MoveBy::create(0.4f, Vec2(-50, 0)));
+			actionLeft->retain();
+			hero->runAction(actionLeft);
+		}
+		break;
+		case EventKeyboard::KeyCode::KEY_S:
+		{
+			auto actionDown = Spawn::createWithTwoActions(CCAnimate::create(animitionDown), MoveBy::create(0.4f, Vec2(0,-50)));
+			actionDown->retain();
+			hero->runAction(actionDown);
+		}
+		break;
+		default:
+			break;
+		}
+	};
+
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(Listener, this);
+
+
     return true;
 }
 
-
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-    //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
