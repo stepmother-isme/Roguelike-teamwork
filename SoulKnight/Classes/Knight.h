@@ -18,8 +18,6 @@ public:
 
 	void setPosition(const cocos2d::Vec2& newPosition);//放置角色初始位置
 	static Knight* createWithSpriteFrameName(const char* spriteFrameName);
-	static Knight* create(const char* spriteFrameName);
-
 	virtual bool init();//可能需要添加的Scene参数
 	virtual bool isAlreadyDead();  //添加父类后继承用于判断是否GG
 
