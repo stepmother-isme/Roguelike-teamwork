@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="25" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" name="地板" tilewidth="32" tileheight="32" tilecount="128" columns="8">
+  <image source="地图/地板.png" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="129" name="装饰" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="地图/装饰.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="385" name="装饰2" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="地图/装饰2.png" width="512" height="512"/>
+ </tileset>
+ <layer id="1" name="ground" width="25" height="15" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJxjY2BgYKMxlhkmWGgUDzkcCsRhWHD4qB0DYscoph8GAEYiIpc=
+  </data>
+ </layer>
+ <layer id="3" name="装饰" width="25" height="15" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhYEMjEwBAExCFMxKk/xYhd/CkQP6OaqxgY0oD2pANxBhALQN32FYi/AXEVkF8NxDVEuhkXKAOaXQ7EFUCsQKFZ+AAfDc0eKmA1MIzXAPFaHOmHUgAK491As/cA8V5G2oX5aaDZZ4D4LI38AQOUuF8NqFedxmnODGi+OQ3s+EPjcAUBHjrlRwBagxJ8
+  </data>
+ </layer>
+ <objectgroup id="2" name="objects"/>
+</map>
