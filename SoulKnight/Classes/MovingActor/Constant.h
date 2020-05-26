@@ -35,8 +35,23 @@ enum AllCamp        //阵营
 //可能会定义的
 
 //可能会定义的方向枚举类型
-//enum EDirection
+enum EDirection
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	UPLEFT,
+	UPRIGHT,
+	DOWNLEFT,
+	DOWNRIGHT
+};
 
+enum keyPress
+{
+	PRESS,
+	RELEASE
+};
 
 
 //可能会

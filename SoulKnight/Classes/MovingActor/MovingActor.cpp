@@ -14,8 +14,6 @@ MovingActor* MovingActor::create(const std::string& filename, HelloWorld* Scene)
 
 	CC_SAFE_DELETE(sprite);
 	return nullptr;
-
-
 }
 
 
@@ -43,5 +41,9 @@ void MovingActor::initData(HelloWorld* Scene)
 
 }
 
+void MovingActor::die()
+{
+	alreadyDead = true;
+}
 
 //buff¿‡¥˝ÃÌº”
