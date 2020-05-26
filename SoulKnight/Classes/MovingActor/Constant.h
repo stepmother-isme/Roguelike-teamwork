@@ -46,7 +46,8 @@ enum EDirection
 	UPLEFT,
 	UPRIGHT,
 	DOWNLEFT,
-	DOWNRIGHT
+	DOWNRIGHT,
+	NODIR
 };
 
 enum keyPress
