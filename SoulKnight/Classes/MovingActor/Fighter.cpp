@@ -1,6 +1,6 @@
 #include"MovingActor.h"
 #include"Fighter.h"
-#include"Constant.h"
+#include"MovingActor/Constant.h"
 #include<set>
 #include "Fighter.h"
 //
@@ -56,8 +56,8 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 	manaPoints = initFighterData["manaPoints"].asInt();
 	critRate = initFighterData["critRate"].asFloat();
 
-
-	identityRadius = INIT_ID_RADIUS;//初始感知半径500，boss可能会更大
+	//我刚拉过来的时候这东西识别不了，我先注释掉
+	//identityRadius = INIT_ID_RADIUS;//初始感知半径500，boss可能会更大
 	equipNumber = INIT_EQUIP_NUMBER;
 
 	alreadyDead = false;
@@ -68,8 +68,7 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 	curHitPoints = hitPoints;         //初始设定为满值
 	curShield = shield;		
 	curManaPoints = manaPoints;
-	
-		
+			
 	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???不甚理解可能存在bug
 	{
 		equips[i] = nullptr;
@@ -123,6 +122,43 @@ bool Fighter::isInMelee()           //判断enemy位于范围内，暂时不会写
 
 void Fighter::fighterMove()      //
 {
+	Vec2 current = this->getPosition();
+	switch (direction)
+	{
+	case EDirection::UP:
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::UPLEFT:
+		current.x -= INIT_MOVESPEED;
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::UPRIGHT:
+		current.x += INIT_MOVESPEED;
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::LEFT:
+		current.x -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWN:
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWNLEFT:
+		current.x -= INIT_MOVESPEED;
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWNRIGHT:
+		current.x += INIT_MOVESPEED;
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::RIGHT:
+		current.x += INIT_MOVESPEED;
+		break;
+	case EDirection::NODIR:
+		break;
+	default:
+		break;
+	}
+	this->setPosition(current);
 }
 
 

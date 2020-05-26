@@ -2,6 +2,8 @@
 #include "MovingActor/Constant.h"
 #include <functional>
 
+//该控制器基于学长的代码编写
+
 MoveController* MoveController::createMoveController()
 {
 	MoveController* layer = MoveController::create();
@@ -18,6 +20,7 @@ void MoveController::ctrlInit()
 {
 	listener = EventListenerKeyboard::create();
 
+	//设置绑定监听器
 	listener->onKeyPressed = CC_CALLBACK_2(MoveController::onKeyPress, this);
 	listener->onKeyReleased = CC_CALLBACK_2(MoveController::onKeyReleased, this);
 }
@@ -58,6 +61,7 @@ bool MoveController::updateDir()
 {
 	if (pressW)
 	{
+		firstDirection = EDirection::UP;
 		if (pressA)
 			direction = EDirection::UPLEFT;
 		else if (pressD)
@@ -69,6 +73,7 @@ bool MoveController::updateDir()
 	}
 	else if (pressS)
 	{
+		firstDirection = EDirection::DOWN;
 		if (pressA)
 			direction = EDirection::DOWNLEFT;
 		else if (pressD)
@@ -80,8 +85,10 @@ bool MoveController::updateDir()
 	}
 	else
 	{
+		
 		if (pressA)
 		{
+			firstDirection = EDirection::LEFT;
 			if (pressD)
 				direction = EDirection::NODIR;
 			else
@@ -89,6 +96,7 @@ bool MoveController::updateDir()
 		}
 		else if (pressD)
 		{
+			firstDirection = EDirection::RIGHT;
 			if (pressA)
 				direction = EDirection::NODIR;
 			else
