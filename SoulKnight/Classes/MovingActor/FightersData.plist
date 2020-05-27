@@ -16,6 +16,10 @@
 		<real>0.050000</real>
 		<key>MovingSpeed</key>
 		<integer>360</integer>
+		<key>skillCD</key>
+		<integer>10</integer>
+		<key>skillLastTime</key>
+		<integer>5</integer>
 	</dict>
 	<key>Ranger</key>
 	<dict>
@@ -29,6 +33,10 @@
 		<integer>1</integer>
 		<key>MovingSpeed</key>
 		<integer>400</integer>
+		<key>skillCD</key>
+		<integer>2</integer>
+		<key>skillLastTime</key>
+		<integer>0</integer>
 	</dict>
 </dict>
 </plist>
