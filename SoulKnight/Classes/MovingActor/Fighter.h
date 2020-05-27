@@ -2,7 +2,7 @@
 #ifndef __FIGHTER_H__
 #define __FIGHTER_H__
 #include "cocos2d.h"
-#include "MovingActor.h"
+#include "MovingActor/MovingActor.h"
 
 USING_NS_CC;
 
