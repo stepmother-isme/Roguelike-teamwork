@@ -35,6 +35,14 @@ enum AllCamp        //阵营
 	ENEMY
 };
 //可能会定义的
+enum EEQUIPMENT
+{
+	POJIUDESHOUQIANG,
+	AK47,
+	GANCAOCHA,
+	NOTHING
+	//TBD
+};
 
 //可能会定义的方向枚举类型
 enum EDirection
