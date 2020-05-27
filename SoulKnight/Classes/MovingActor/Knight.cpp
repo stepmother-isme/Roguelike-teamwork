@@ -1,52 +1,67 @@
 #include"Knight.h"
-#include "cocos2d.h"
+//#include "HelloWorldScene.h"
 
-Knight* Knight::createWithSpriteFrameName(const char* spriteFrameName)
+
+
+Knight* Knight::create(HelloWorld* Scene, std::string Name)
 {
 	Knight* knight = new Knight();
-	if (knight && knight->initWithSpriteFrameName(spriteFrameName))
+	if (knight && knight->init(Scene, Name))
 	{
 		knight->autorelease();
-
-
-
-
-		//物理引擎
 		return knight;
 	}
-	CC_SAFE_DELETE(knight);
-	return NULL;
 
+	CC_SAFE_DELETE(knight);
+	return nullptr;
 }
+
+
+
+bool Knight::init(HelloWorld* Scene, std::string Name)
+{
+	if (!Fighter::init(Scene, Name))
+	{
+		return false;
+	}
+	//待初始化数据
+
+	//TBD
+
+	return true;
+}
+
+
+
+bool Knight::isAlreadyDead()
+{
+	if (curHitPoints == 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 
 
 void Knight::setPosition(const cocos2d::Vec2& newPosition)
 {
-	//架构然后放在中心位置
 
 
-}
+};
 
-bool Knight::init()
+
+
+
+void Knight::releaseSkill()
 {
-	if (!Sprite::init())
-	{
-		return false;
-	}
+	
+	//双枪目前还不知怎么写
+	//攻速加成buff和移速buff将会在buff类之后更新
 
-	hitPoints = 5;
-	shield = 5;
-	manaPoints = 180; //初始化血量、护甲、法力值，后期也可选择传参进行改值.
-	//lastSkillTime = 5.0f 
-	return true;
+	
+	
 }
 
-bool Knight::isAlreadyDead()//用于判断主角是否已死，待添加回调函数
-{
-	if (hitPoints <= 0)
-	{
-		return true;
-	}
-	return false;
-}
 

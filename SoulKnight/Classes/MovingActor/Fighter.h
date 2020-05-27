@@ -25,6 +25,10 @@ class Fighter :public MovingActor
 	CC_SYNTHESIZE(String, fighterName, FighterName);	//获取角色名
 	CC_SYNTHESIZE(int, equipNumber, EquipNumber);     //所能携带的武器数量
 
+	//5.27从子类移至父类
+	CC_SYNTHESIZE(float, lastSkillTime, LastSkillTime);      //技能持续时间
+	CC_SYNTHESIZE(float, skillCDTime, SkillCDTime);			//技能冷却时间
+
 	
 
 public:
@@ -50,6 +54,8 @@ public:
 	static Fighter* create(HelloWorld* Scene, std::string fighterName);   //Unknown
 
 	virtual void playAttackAnimation();   //？？？ Unknown
+
+	virtual bool isZeroSheild();           //判定护甲值是否为0
 
 protected:
 

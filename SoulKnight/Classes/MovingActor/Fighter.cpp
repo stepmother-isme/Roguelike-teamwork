@@ -55,7 +55,8 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 	acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
 	manaPoints = initFighterData["manaPoints"].asInt();
 	critRate = initFighterData["critRate"].asFloat();
-
+	lastSkillTime = initFighterData["skillLastTime"].asFloat();
+	skillCDTime = initFighterData["skillCD"].asFloat();
 
 	identityRadius = INIT_ID_RADIUS;//初始感知半径500，boss可能会更大
 	equipNumber = INIT_EQUIP_NUMBER;
@@ -64,6 +65,7 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 	attackSpeed = 0.f;
 	attackMode = MIX;
 	lastTimeInjured = 0.f;
+	//lastSkillTime = 0.f;
 
 	curHitPoints = hitPoints;         //初始设定为满值
 	curShield = shield;		
@@ -129,6 +131,16 @@ void Fighter::fighterMove()      //
 
 void Fighter::playAttackAnimation()
 {
+}
+
+
+bool Fighter::isZeroSheild()
+{
+	if (curShield == 0 && curHitPoints != 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 
