@@ -1,6 +1,6 @@
 #include"MovingActor.h"
 #include"Fighter.h"
-#include"Constant.h"
+#include"MovingActor/Constant.h"
 #include<set>
 #include "Fighter.h"
 //
@@ -13,7 +13,7 @@ Fighter* Fighter::create(HelloWorld* Scene ,std::string fighterName)
 	{
 
 		fighter->autorelease();
-		return fighter;					//	£¿£¿£¿£¿²¨ÀËÏßÔ­ÒòÎ´Öª
+		return fighter;					//	ï¼Ÿï¼Ÿï¼Ÿï¼Ÿæ³¢æµªçº¿åŸå› æœªçŸ¥
 	}
 
 	CC_SAFE_DELETE(fighter);
@@ -33,7 +33,7 @@ bool Fighter::init(HelloWorld* Scene, std::string fighterName)
 	}
 
 	initHeroData( Scene, fighterName);
-	//ÆäËû³õÊ¼¶¨Òå´ı²¹³ä
+	//å…¶ä»–åˆå§‹å®šä¹‰å¾…è¡¥å……
 
 	return true;
 
@@ -49,16 +49,18 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 
 	fighterName = Name;
 
-	hitPoints = initFighterData["hitPoints"].asInt();     //ÀûÓÃplistµÄ¼üÖµ¶Ô
+	hitPoints = initFighterData["hitPoints"].asInt();     //åˆ©ç”¨plistçš„é”®å€¼å¯¹
 	moveSpeed = initFighterData["MovingSpeed"].asFloat();
 	shield = initFighterData["shield"].asInt();
 	acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
 	manaPoints = initFighterData["manaPoints"].asInt();
 	critRate = initFighterData["critRate"].asFloat();
-	lastSkillTime = initFighterData["skillLastTime"].asFloat();
+  lastSkillTime = initFighterData["skillLastTime"].asFloat();
 	skillCDTime = initFighterData["skillCD"].asFloat();
 
-	identityRadius = INIT_ID_RADIUS;//³õÊ¼¸ĞÖª°ë¾¶500£¬boss¿ÉÄÜ»á¸ü´ó
+	identityRadius = INIT_ID_RADIUS;//åˆå§‹æ„ŸçŸ¥åŠå¾„500ï¼Œbosså¯èƒ½ä¼šæ›´å¤§
+  
+
 	equipNumber = INIT_EQUIP_NUMBER;
 
 	alreadyDead = false;
@@ -67,12 +69,11 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 	lastTimeInjured = 0.f;
 	//lastSkillTime = 0.f;
 
-	curHitPoints = hitPoints;         //³õÊ¼Éè¶¨ÎªÂúÖµ
+	curHitPoints = hitPoints;         //åˆå§‹è®¾å®šä¸ºæ»¡å€¼
 	curShield = shield;		
 	curManaPoints = manaPoints;
-	
-		
-	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???²»ÉõÀí½â¿ÉÄÜ´æÔÚbug
+			
+	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???ä¸ç”šç†è§£å¯èƒ½å­˜åœ¨bug
 	{
 		equips[i] = nullptr;
 
@@ -84,7 +85,7 @@ bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
 
 bool Fighter::isFullEquipments()
 {
-	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???²»ÉõÀí½â¿ÉÄÜ´æÔÚbug
+	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???ä¸ç”šç†è§£å¯èƒ½å­˜åœ¨bug
 	{
 		if (equips[i] = nullptr)
 		{
@@ -95,7 +96,7 @@ bool Fighter::isFullEquipments()
 	return true;
 }
 
-Equipment* Fighter::changeMainEquip()    //´ıÌí¼ÓÇĞ»»ÎäÆ÷µÄÒôĞ§
+Equipment* Fighter::changeMainEquip()    //å¾…æ·»åŠ åˆ‡æ¢æ­¦å™¨çš„éŸ³æ•ˆ
 {
 	if (isFullEquipments() == false)
 	{
@@ -115,7 +116,7 @@ bool Fighter::attack()
 
 
 
-bool Fighter::isInMelee()           //ÅĞ¶ÏenemyÎ»ÓÚ·¶Î§ÄÚ£¬ÔİÊ±²»»áĞ´
+bool Fighter::isInMelee()           //åˆ¤æ–­enemyä½äºèŒƒå›´å†…ï¼Œæš‚æ—¶ä¸ä¼šå†™
 {
 	return false;
 }
@@ -125,6 +126,43 @@ bool Fighter::isInMelee()           //ÅĞ¶ÏenemyÎ»ÓÚ·¶Î§ÄÚ£¬ÔİÊ±²»»áĞ´
 
 void Fighter::fighterMove()      //
 {
+	Vec2 current = this->getPosition();
+	switch (direction)
+	{
+	case EDirection::UP:
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::UPLEFT:
+		current.x -= INIT_MOVESPEED;
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::UPRIGHT:
+		current.x += INIT_MOVESPEED;
+		current.y += INIT_MOVESPEED;
+		break;
+	case EDirection::LEFT:
+		current.x -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWN:
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWNLEFT:
+		current.x -= INIT_MOVESPEED;
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::DOWNRIGHT:
+		current.x += INIT_MOVESPEED;
+		current.y -= INIT_MOVESPEED;
+		break;
+	case EDirection::RIGHT:
+		current.x += INIT_MOVESPEED;
+		break;
+	case EDirection::NODIR:
+		break;
+	default:
+		break;
+	}
+	this->setPosition(current);
 }
 
 
@@ -146,21 +184,21 @@ bool Fighter::isZeroSheild()
 
 void Fighter::die()
 {
-	//Ìí¼ÓÓ¢ĞÛËÀÍöÊ±µÄÒôĞ§ºÍÍ¼Ïñ
+	//æ·»åŠ è‹±é›„æ­»äº¡æ—¶çš„éŸ³æ•ˆå’Œå›¾åƒ
 	//if(this == _combatScene->getMyHero())
 	//{
 	//	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/YouHaveBeenSlained.wav", false, 1, 0, 1.2);
 	//}
-	//Ñ§³¤µÄ²Î¿¼´úÂë
+	//å­¦é•¿çš„å‚è€ƒä»£ç 
 
-	//setVisible(false);»òÊÇÏÔÊ¾Ó¢ĞÛµ¹µØ±äºÚ²»ÔÙÕ½¶·
+	//setVisible(false);æˆ–æ˜¯æ˜¾ç¤ºè‹±é›„å€’åœ°å˜é»‘ä¸å†æˆ˜æ–—
 
 
 	alreadyDead = true;
-	//½øÈë½áËãÒ³Ãæ
+	//è¿›å…¥ç»“ç®—é¡µé¢
 }
 
 void Fighter::releaseSkill()
 {
-//¼Ì³ĞÏÂÖÁ¾ßÌåÓ¢ĞÛĞ´	
+//ç»§æ‰¿ä¸‹è‡³å…·ä½“è‹±é›„å†™	
 }

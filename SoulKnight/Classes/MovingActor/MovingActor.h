@@ -13,13 +13,13 @@ class HelloWorld;
 
 class MovingActor :public cocos2d::Sprite
 {
-<<<<<<< HEAD:SoulKnight/Classes/Classes/MovingActor.h
-	CC_SYNTHESIZE(int, hitPoints, Hitpoints);   //生命值上限
+
+	CC_SYNTHESIZE(int, maxHitPoints, MaxHitpoints);   //生命值上限
 	CC_SYNTHESIZE(int,curHitPoints,CurHitPoints) //当前生命值
-=======
+
 	CC_SYNTHESIZE(AllCamp, camp, Camp);//阵营
 	CC_SYNTHESIZE(INT32, hitPoints, Hitpoints);   //生命值
->>>>>>> 3e378d5f006c5db337c851d1a77a1a1d86a85aec:SoulKnight/Classes/MovingActor/MovingActor.h
+
 	CC_SYNTHESIZE(float, identityRadius, IdentityRadius); //识别半径用于感知范围
 	CC_SYNTHESIZE(float, moveSpeed, MoveSpeed); //移动速度
 	CC_SYNTHESIZE(float, attackSpeed, AttackSpeed); //攻击速度/攻击频次

@@ -1,7 +1,7 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-#include "Knight.h"
-#include"HelloWorldScene.h"
+#include "MovingActor/Knight.h"
+#include"MovingActor/HelloWorldScene.h"
 
 USING_NS_CC;
 
