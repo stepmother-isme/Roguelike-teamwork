@@ -1,11 +1,12 @@
 #include"MovingActor/MovingActor.h"
-#include"Fighter.h"
+#include"MovingActor/Fighter.h"
 #include"MovingActor/Constant.h"
-#include<set>
-#include "Fighter.h"
-//
+#include"Scene/GameScene.h"
 
-Fighter* Fighter::create(HelloWorld* Scene ,std::string fighterName)
+#include<set>
+
+
+Fighter* Fighter::create(GameScene* Scene ,std::string fighterName)
 {
 
 	Fighter* fighter = new Fighter();
@@ -25,7 +26,7 @@ Fighter* Fighter::create(HelloWorld* Scene ,std::string fighterName)
 
 
 
-bool Fighter::init(HelloWorld* Scene, std::string fighterName)
+bool Fighter::init(GameScene* Scene, std::string fighterName)
 {
 	if (!Sprite::init())
 	{
@@ -40,13 +41,12 @@ bool Fighter::init(HelloWorld* Scene, std::string fighterName)
 }
 
 
-bool Fighter::initHeroData(HelloWorld* Scene, std::string Name)
+bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 {
 	ValueMap value = FileUtils::getInstance()->getValueMapFromFile("FightersData.plist");
 	initFighterData = value.at(Name).asValueMap();
 
 	exploreScene = Scene;
-
 	fighterName = Name;
 
 	hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
@@ -165,6 +165,52 @@ void Fighter::fighterMove()      //
 	this->setPosition(current);
 }
 
+void Fighter::stand()
+{
+	switch (fdirection)
+	{
+	case EDirection::UP:
+		//setTexture();
+		break;
+	case EDirection::DOWN:
+		//setTexture();
+		break;
+	case EDirection::LEFT:
+		//setTexture();
+		break;
+	case EDirection::RIGHT:
+		//setTexture();
+		break;
+	}
+	direction = EDirection::NODIR;
+}
+
+void Fighter::updateTarget()
+{
+	MovingActor* tempTarget = NULL;
+	Vector<MovingActor*>& allEnemySoldier = exploreScene->enemySoldier;
+	Vector<MovingActor*>& allEnemyBoss = exploreScene->enemyBoss;
+
+	auto temp = allEnemyBoss.begin();
+	if (!(*temp)->getAlreadyDead() && !allEnemyBoss.empty())
+	{
+		tempTarget = *temp;
+	}
+	if (!tempTarget)
+	{
+		float tempRadius = identityRadius;
+		for (auto tempSoldier = allEnemySoldier.begin(); temp != allEnemySoldier.end(); ++tempSoldier)
+		{
+			float calRadius= (*tempSoldier)->getPosition().getDistance(this->getPosition());
+			if (calRadius < tempRadius)
+			{
+				tempTarget = *tempSoldier;
+				tempRadius = calRadius;
+			}
+		}
+	}
+	attackTarget = tempTarget;
+}
 
 
 void Fighter::playAttackAnimation()

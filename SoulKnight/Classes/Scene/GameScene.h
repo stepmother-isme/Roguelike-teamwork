@@ -2,12 +2,15 @@
 #define __GameScene_SCENE_H__
 
 #include "cocos2d.h"
-#include "Knight.h"
+#include "MovingActor/Knight.h"
+#include "MovingActor/MovingActor.h"
 #include <vector>
 
 USING_NS_CC;
 
 class Record;
+class MovingActor;
+
 class GameScene : public cocos2d::Scene
 {
 
@@ -49,6 +52,14 @@ private:
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
 
 public:
+	//可以公开使用的一些容器
+	Vector<MovingActor*> enemySoldier;
+	Vector<MovingActor*> enemyBoss;
+	Vector<MovingActor*> allFighter;
+	Vector<Sprite*> flyingItem;
+	//Vector<UnMovingActor*> allNpc;
+
+
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	virtual void loadingAnimation();

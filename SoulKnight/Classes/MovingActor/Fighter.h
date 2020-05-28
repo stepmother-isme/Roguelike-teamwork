@@ -3,6 +3,9 @@
 #define __FIGHTER_H__
 #include "cocos2d.h"
 #include "MovingActor/MovingActor.h"
+#include "MovingActor/Constant.h"
+#include "MovingActor/Enemy.h"
+
 
 USING_NS_CC;
 
@@ -49,15 +52,19 @@ public:
 
 	virtual void fighterMove();               //发起移动
 
+	virtual void stand();                     //停止移动后英雄的面向
+
 	virtual bool isInMelee();                  //是否在近战范围
 
-	virtual bool init(HelloWorld* Scene, std::string fighterName);
+	virtual bool init(GameScene* Scene, std::string fighterName);
 
-	static Fighter* create(HelloWorld* Scene, std::string fighterName);   //Unknown
+	static Fighter* create(GameScene* Scene, std::string fighterName);   //Unknown
 
 	virtual void playAttackAnimation();   //？？？ Unknown
 
 	virtual bool isZeroSheild();           //判定护甲值是否为0
+	
+	virtual void updateTarget();            //刷新攻击目标
 
 protected:
 
@@ -75,7 +82,7 @@ protected:
 	//virtual void updateDirection();
 	//※※此处参照学长所做修正方向的函数，如有需要待定义，待编写
 
-	virtual bool initHeroData(HelloWorld* Scene, std::string fighterName);
+	virtual bool initHeroData(GameScene* Scene, std::string fighterName);
 };
 
 
