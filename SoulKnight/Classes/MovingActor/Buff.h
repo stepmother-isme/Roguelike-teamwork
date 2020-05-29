@@ -19,6 +19,10 @@ class Buff :public cocos2d::Sprite
 {
 	//CC_SYNTHESIZE(int, hp, HP);                          
 	//CC_SYNTHESIZE(float, buffMoveSpeed, BuffMoveSpeed);
+	CC_SYNTHESIZE(int, hp, HP);                   //血瓶效果,烧伤，中毒
+	CC_SYNTHESIZE(int, mp, MP);					 //魔瓶效果       能量药瓶效果
+	CC_SYNTHESIZE(float, buffMoveSpeed, BuffMoveSpeed);   //移动速度效果   增益/减益 ,冰冻，眩晕
+	
 
 	CC_SYNTHESIZE(float, duration, Duration);   //持续时间
 	CC_SYNTHESIZE(float, beginTime, BeginTime); //开始时间
