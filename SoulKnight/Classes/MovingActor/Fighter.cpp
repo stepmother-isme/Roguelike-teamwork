@@ -1,6 +1,7 @@
 #include"MovingActor/MovingActor.h"
 #include"MovingActor/Fighter.h"
 #include"MovingActor/Constant.h"
+#include"MovingActor/Bullet.h"
 #include"Scene/GameScene.h"
 
 #include<set>
@@ -110,6 +111,28 @@ Equipment* Fighter::changeMainEquip()    //待添加切换武器的音效
 
 bool Fighter::attack()
 {
+	if (attackTarget)
+	{
+		//图片路径尚未填写
+		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
+		bulletSprite->giveOut();
+		//bulletSprite->setPosition(this->getPosition());
+		//bulletSprite->setScale();
+		exploreScene->getMap()->addChild(bulletSprite);
+		exploreScene->flyingItem.pushBack(bulletSprite);
+		return true;
+	}
+	else if(!attackTarget)
+	{
+		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
+		bulletSprite->giveOut(fdirection);
+		//bulletSprite->setPosition(this->getPosition());
+		//bulletSprite->setScale();
+		exploreScene->getMap()->addChild(bulletSprite);
+		exploreScene->flyingItem.pushBack(bulletSprite);
+		return true;
+	}
+
 	return false;
 }
 
@@ -230,6 +253,7 @@ bool Fighter::isZeroSheild()
 
 void Fighter::die()
 {
+
 	//添加英雄死亡时的音效和图像
 	//if(this == _combatScene->getMyHero())
 	//{

@@ -4,6 +4,7 @@
 
 #include"cocos2d.h"
 #include<string>
+#include"MovingActor/Constant.h"
 
 USING_NS_CC;
 
@@ -17,6 +18,9 @@ class Bullet :public cocos2d::Sprite
 	CC_SYNTHESIZE(MovingActor*, _victim, Victim);
 public:
 	virtual bool init(const std::string& filename, INT32 damage, float flySpeed, MovingActor* owner, MovingActor* victim);
+	virtual void giveOut();
+	virtual void giveOut(EDirection Dir);
+	virtual void fly();
 	static Bullet* create(const std::string& filename, INT32 damage, float flySpeed, MovingActor* owner, MovingActor* victim);
 };
 

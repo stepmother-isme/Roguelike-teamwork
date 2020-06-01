@@ -56,6 +56,7 @@ void MovingActor::takeDamage(DamageMode type, INT32 damage, MovingActor* enemy)
 
 bool MovingActor::attack()
 {
+	//我准备把这些东西搬到Fighter和enemy里面
 	if (attackTarget)
 	{
 		//图片路径尚未填写
