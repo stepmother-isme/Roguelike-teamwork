@@ -49,6 +49,7 @@ bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 
 	exploreScene = Scene;
 	fighterName = Name;
+	camp = AllCamp::FRIENDLY;
 
 	hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
 	moveSpeed = initFighterData["MovingSpeed"].asFloat();
@@ -238,6 +239,7 @@ void Fighter::updateTarget()
 
 void Fighter::playAttackAnimation()
 {
+	//这个东西不好写啊
 }
 
 
