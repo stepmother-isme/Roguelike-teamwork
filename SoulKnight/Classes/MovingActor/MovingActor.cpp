@@ -1,9 +1,11 @@
-#include"MovingActor.h"
-#include"Constant.h"
+#include"MovingActor/MovingActor.h"
+#include"MovingActor/Constant.h"
+#include"MovingActor/Bullet.h"
+#include"Scene/GameScene.h"
 
 //待添加其他内容
 
-MovingActor* MovingActor::create(const std::string& filename, HelloWorld* Scene)
+MovingActor* MovingActor::create(const std::string& filename, GameScene* Scene)
 {
 	MovingActor* sprite = new  MovingActor();
 	if (sprite && sprite->init(filename, Scene))
@@ -17,7 +19,7 @@ MovingActor* MovingActor::create(const std::string& filename, HelloWorld* Scene)
 }
 
 
-bool MovingActor::init(const std::string& filename, HelloWorld* Scene)
+bool MovingActor::init(const std::string& filename, GameScene* Scene)
 {
 	if (!Sprite::initWithFile(filename))
 	{
@@ -29,7 +31,7 @@ bool MovingActor::init(const std::string& filename, HelloWorld* Scene)
 
 }
 
-void MovingActor::initData(HelloWorld* Scene)
+void MovingActor::initData(GameScene* Scene)
 {
 	exploreScene = Scene;
 	hitPoints = INIT_HITPOINTS;      //初始生命值5
@@ -40,6 +42,31 @@ void MovingActor::initData(HelloWorld* Scene)
 	alreadyDead = false;
 
 
+}
+
+void MovingActor::takeDamage(DamageMode type, INT32 damage, MovingActor* enemy)
+{
+
+	hitPoints -= damage;
+	attackFrom = enemy;
+
+	if (hitPoints <= 0)
+		die();
+}
+
+bool MovingActor::attack()
+{
+	if (attackTarget)
+	{
+		//图片路径尚未填写
+		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
+		bulletSprite->setPosition(this->getPosition);
+		//bulletSprite->setScale();
+		exploreScene->getMap()->addChild(bulletSprite);
+		exploreScene->flyingItem.pushBack(bulletSprite);
+		return true;
+	}
+	return false;
 }
 
 void MovingActor::die()

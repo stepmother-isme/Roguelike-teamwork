@@ -2,7 +2,10 @@
 #ifndef __FIGHTER_H__
 #define __FIGHTER_H__
 #include "cocos2d.h"
-#include "MovingActor.h"
+#include "MovingActor/MovingActor.h"
+#include "MovingActor/Constant.h"
+#include "MovingActor/Enemy.h"
+
 
 USING_NS_CC;
 
@@ -11,6 +14,8 @@ class Equipment;
 class Fighter :public MovingActor
 {
 	CC_SYNTHESIZE(EAttackMode, attackMode, AttackMode);//设置攻击模式的切换 近战/远程
+	CC_SYNTHESIZE(EDirection, direction, Direction);//人物的移动方向
+	CC_SYNTHESIZE(EDirection, fdirection, FDirection);//人物的面向
 
 	CC_SYNTHESIZE(int, shield, Shield);                //护甲值上限
 	CC_SYNTHESIZE(int, curShield, CurShield);		   //当前护甲值
@@ -24,6 +29,10 @@ class Fighter :public MovingActor
 
 	CC_SYNTHESIZE(String, fighterName, FighterName);	//获取角色名
 	CC_SYNTHESIZE(int, equipNumber, EquipNumber);     //所能携带的武器数量
+
+	//5.27从子类移至父类
+	CC_SYNTHESIZE(float, lastSkillTime, LastSkillTime);      //技能持续时间
+	CC_SYNTHESIZE(float, skillCDTime, SkillCDTime);			//技能冷却时间
 
 	
 
@@ -43,13 +52,19 @@ public:
 
 	virtual void fighterMove();               //发起移动
 
+	virtual void stand();                     //停止移动后英雄的面向
+
 	virtual bool isInMelee();                  //是否在近战范围
 
-	virtual bool init(HelloWorld* Scene, std::string fighterName);
+	virtual bool init(GameScene* Scene, std::string fighterName);
 
-	static Fighter* create(HelloWorld* Scene, std::string fighterName);   //Unknown
+	static Fighter* create(GameScene* Scene, std::string fighterName);   //Unknown
 
 	virtual void playAttackAnimation();   //？？？ Unknown
+
+	virtual bool isZeroSheild();           //判定护甲值是否为0
+	
+	virtual void updateTarget();            //刷新攻击目标
 
 protected:
 
@@ -67,7 +82,7 @@ protected:
 	//virtual void updateDirection();
 	//※※此处参照学长所做修正方向的函数，如有需要待定义，待编写
 
-	virtual bool initHeroData(HelloWorld* Scene, std::string fighterName);
+	virtual bool initHeroData(GameScene* Scene, std::string fighterName);
 };
 
 

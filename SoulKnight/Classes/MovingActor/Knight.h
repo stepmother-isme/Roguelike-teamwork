@@ -1,25 +1,30 @@
 #ifndef __KNIGHT_H__
 #define __KNIGHT_H__
 #include "cocos2d.h"
+#include "Fighter.h"
 
 
 USING_NS_CC;
 
-class Knight :public cocos2d::Sprite
+class HelloWorld;
+
+class Knight :public Fighter
 {
-	CC_SYNTHESIZE(INT32, hitPoints, HitPoints);    //生命值
-	CC_SYNTHESIZE(INT32, manaPoints, ManaPoints);  //法力值
-	CC_SYNTHESIZE(INT32, shield, Shield);		   //护甲值	
-	CC_SYNTHESIZE(float, critRate, CritRate);	   //暴击率
-	CC_SYNTHESIZE(float, lastSkillTime, LastSkillTime); //技能持续时间
+	
 
 	//Crit rate
 public:
 
 	void setPosition(const cocos2d::Vec2& newPosition);//放置角色初始位置
-	static Knight* createWithSpriteFrameName(const char* spriteFrameName);
-	virtual bool init();//可能需要添加的Scene参数
+
 	virtual bool isAlreadyDead();  //添加父类后继承用于判断是否GG
+
+	virtual bool init(HelloWorld* Scene, std::string Name);
+
+	static Knight* create(HelloWorld* Scene,std::string Name);
+
+	virtual void releaseSkill();               //发起技能
+
 
 	 //没搞武器暂时不写
 	//virtual bool attack();  
