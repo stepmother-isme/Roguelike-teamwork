@@ -12,13 +12,16 @@ public:
 
 	virtual bool init();
 
-	//开始、结束、音乐
+	//开始、结束、帮助、音乐
 	void menuStartCallBack(cocos2d::Ref* pSender);
-	void menuEndCallBack(cocos2d::Ref* pSender);
-	void menuMusicCallBack(cocos2d::Ref* pSender);
+	void menuHelpCallBack(cocos2d::Ref* pSender);
+	void menuExitCallBack(cocos2d::Ref* pSender);
+	void menuAudioCallBack(cocos2d::Ref* pSender);
 
 	CREATE_FUNC(StartGame);
 
 };
 
 #endif
+
+
