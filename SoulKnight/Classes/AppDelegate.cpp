@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
-#include "MovingActor/HelloWorldScene.h"
-#include "Scene/StartGameScene.h"
+//#include "Scene/StartGameScene.h"
+#include "Scene/GameScene.h"
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
@@ -92,14 +92,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    // create a scene. it's an autorelease object
-    auto scene = StartGame::createScene();
-
+ 
+    //auto scene = StartGame::createScene();
+	auto scene = GameScene::createScene();
     // run
     director->runWithScene(scene);
 
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("ArtDesigning/Audio/StartGame.mp3");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("ArtDesigning/Audio/SafetyMap.mp3");
+	//CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("ArtDesigning/Audio/StartGame.mp3");
+	//CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("ArtDesigning/Audio/SafetyMap.mp3");
     return true;
 }
 

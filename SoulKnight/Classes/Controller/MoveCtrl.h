@@ -12,6 +12,7 @@ class MoveController :public Layer
 {
 	CC_SYNTHESIZE(bool,isCanMove,IsCanMove);
 	CC_SYNTHESIZE(EDirection, firstDirection,FirstDirection);
+	CC_SYNTHESIZE(EDirection, lastDirection, LastDirection);
 	CC_SYNTHESIZE(EDirection, direction, Direction);
 public:
 	static MoveController* createMoveController();

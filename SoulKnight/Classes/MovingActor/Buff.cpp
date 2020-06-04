@@ -1,4 +1,5 @@
 #include"Buff.h"
+#include"MovingActor/Constant.h"
  
 Buff* Buff::create(EBuffType _bufftype,
     int _buffHP, int _buffMP,
@@ -32,11 +33,11 @@ bool Buff::init(EBuffType _bufftype,
     }
     //初始化属性
 
-    buffType = _bufftype;
-    buffHP = _buffHP;
-    buffMP = _buffMP;
-    buffMoveSpeed = _buffMoveSpeed;
-    duration = _duration;
+    //buffType = _bufftype;
+    //buffHP = _buffHP;
+    //buffMP = _buffMP;
+    //buffMoveSpeed = _buffMoveSpeed;
+    //duration = _duration;
 
 
     //
@@ -47,18 +48,18 @@ bool Buff::init(EBuffType _bufftype,
 
 }
 
-bool Buff::init(ValueVector& data)
-{
-
-    if (!Sprite::init())
-    {
-        return false;
-
-    }
-
-
-
-    //感觉没必要写，留个接口吧
-    return true;
-
-}
+//bool Buff::init(ValueVector& data)
+//{
+//
+//    if (!Sprite::init())
+//    {
+//        return false;
+//
+//    }
+//
+//
+//
+//    //感觉没必要写，留个接口吧
+//    return true;
+//
+//}

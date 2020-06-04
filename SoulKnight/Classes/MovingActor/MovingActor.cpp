@@ -28,7 +28,7 @@ bool MovingActor::init(const std::string& filename, GameScene* Scene)
 
 	initData(Scene);
 
-
+	return true;
 }
 
 void MovingActor::initData(GameScene* Scene)
@@ -57,16 +57,6 @@ void MovingActor::takeDamage(DamageMode type, INT32 damage, MovingActor* enemy)
 bool MovingActor::attack()
 {
 	//我准备把这些东西搬到Fighter和enemy里面
-	if (attackTarget)
-	{
-		//图片路径尚未填写
-		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
-		bulletSprite->setPosition(this->getPosition);
-		//bulletSprite->setScale();
-		exploreScene->getMap()->addChild(bulletSprite);
-		exploreScene->flyingItem.pushBack(bulletSprite);
-		return true;
-	}
 	return false;
 }
 

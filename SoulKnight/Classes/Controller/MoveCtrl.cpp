@@ -22,7 +22,9 @@ void MoveController::ctrlInit()
 
 	//ÉèÖÃ°ó¶¨¼àÌýÆ÷
 	listener->onKeyPressed = CC_CALLBACK_2(MoveController::onKeyPress, this);
-	listener->onKeyReleased = CC_CALLBACK_2(MoveController::onKeyReleased, this);
+	listener->onKeyReleased = CC_CALLBACK_2(MoveController::onKeyRelease, this);
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener,2);
+
 }
 
 bool MoveController::update(EventKeyboard::KeyCode keycode, keyPress type)
@@ -30,25 +32,27 @@ bool MoveController::update(EventKeyboard::KeyCode keycode, keyPress type)
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_W:
-		if (type = PRESS)
+		if (type == PRESS)
 			pressW = true;
-		else
+		else if (type == RELEASE)
+		{
 			pressW = false;
-		break;
+		}
+			break;
 	case EventKeyboard::KeyCode::KEY_S:
-		if (type = PRESS)
+		if (type == PRESS)
 			pressS = true;
 		else
 			pressS = false;
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
-		if (type = PRESS)
+		if (type == PRESS)
 			pressA = true;
 		else
 			pressA = false;
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
-		if (type = PRESS)
+		if (type == PRESS)
 			pressD = true;
 		else
 			pressD = false;
@@ -111,11 +115,14 @@ bool MoveController::updateDir()
 bool MoveController::onKeyPress(EventKeyboard::KeyCode keycode, Event* event)
 {
 	update(keycode,keyPress::PRESS);
+	if(keycode != EventKeyboard::KeyCode::KEY_J)
+		lastDirection = direction;
 	return true;
 }
 
 bool MoveController::onKeyRelease(EventKeyboard::KeyCode keycode, Event* event)
 {
-	update(keycode,keyPress::RELEASE);
+	update(keycode, keyPress::RELEASE);
+
 	return true;
 }

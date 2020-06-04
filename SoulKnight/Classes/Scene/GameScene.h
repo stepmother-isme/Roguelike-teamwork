@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 #include "MovingActor/Knight.h"
 #include "MovingActor/MovingActor.h"
+#include "MovingActor/Bullet.h"
+#include "Controller/MoveCtrl.h"
 #include <vector>
 
 USING_NS_CC;
@@ -23,6 +25,8 @@ class GameScene : public cocos2d::Scene
 	//CC_SYNTHESIZE(Vector<Projectile*>, _bullets, Bullets);      子弹
 	//CC_SYNTHESIZE(std::vector<Damage>, _damages, AllDamages);   伤害
 	CC_SYNTHESIZE(Record*, _labelRecord, LabelRecord);
+	CC_SYNTHESIZE(Fighter*, _myFighter, MyFighter);
+	CC_SYNTHESIZE(MoveController*, _rocker, Rocker);
 	CC_SYNTHESIZE(Knight*, _myKnight, MyKnight);
 	CC_SYNTHESIZE(Size, _visibleSize, VisibleSize);
 	CC_SYNTHESIZE(Vec2, _origin, Origin);
@@ -35,6 +39,8 @@ private:
 	void initKnight();
 	//更新角色位置
 	void updateKnightPosition();
+
+	void updateFlyingItem();
 
 	//更新攻击目标
 	void updateEnemiesAttackTarget();
@@ -56,7 +62,7 @@ public:
 	Vector<MovingActor*> enemySoldier;
 	Vector<MovingActor*> enemyBoss;
 	Vector<MovingActor*> allFighter;
-	Vector<Sprite*> flyingItem;
+	Vector<Bullet*> flyingItem;
 	//Vector<UnMovingActor*> allNpc;
 
 

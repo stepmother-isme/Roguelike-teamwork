@@ -14,8 +14,9 @@
 /* 
 *没有具体测量，暂时设置500  
 */
-#define INIT_MOVESPEED 10.0
+#define INIT_MOVESPEED 3.0
 #define INIT_EQUIP_NUMBER 2
+
 
 enum EAttackMode	//	攻击模式,可以是武器的攻击模式，也可是怪物的攻击模式
 {
@@ -27,7 +28,6 @@ enum DamageMode      //伤害类型
 {
 	POISONING,
 	COMMON,
-	BURN
 };
 
 enum AllCamp        //阵营
@@ -48,6 +48,7 @@ enum EEQUIPMENT
 //可能会定义的方向枚举类型
 enum EDirection
 {
+	NODIR,
 	UP,
 	DOWN,
 	LEFT,
@@ -55,8 +56,7 @@ enum EDirection
 	UPLEFT,
 	UPRIGHT,
 	DOWNLEFT,
-	DOWNRIGHT,
-	NODIR
+	DOWNRIGHT
 };
 
 enum keyPress

@@ -44,21 +44,25 @@ bool Fighter::init(GameScene* Scene, std::string fighterName)
 
 bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 {
-	ValueMap value = FileUtils::getInstance()->getValueMapFromFile("FightersData.plist");
-	initFighterData = value.at(Name).asValueMap();
+	//ValueMap value = FileUtils::getInstance()->getValueMapFromFile("FightersData.plist");
+	//initFighterData = value.at(Name).asValueMap();
 
 	exploreScene = Scene;
 	fighterName = Name;
 	camp = AllCamp::FRIENDLY;
 
-	hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
-	moveSpeed = initFighterData["MovingSpeed"].asFloat();
-	shield = initFighterData["shield"].asInt();
-	acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
-	manaPoints = initFighterData["manaPoints"].asInt();
-	critRate = initFighterData["critRate"].asFloat();
-  lastSkillTime = initFighterData["skillLastTime"].asFloat();
-	skillCDTime = initFighterData["skillCD"].asFloat();
+	//hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
+	//moveSpeed = initFighterData["MovingSpeed"].asFloat();
+	//shield = initFighterData["shield"].asInt();
+	//acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
+	//manaPoints = initFighterData["manaPoints"].asInt();
+	//critRate = initFighterData["critRate"].asFloat();
+ // lastSkillTime = initFighterData["skillLastTime"].asFloat();
+	//skillCDTime = initFighterData["skillCD"].asFloat();
+
+
+	//测试用
+	setTexture(StringUtils::format("downDir.png"));
 
 	identityRadius = INIT_ID_RADIUS;//初始感知半径500，boss可能会更大
   
@@ -68,7 +72,9 @@ bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 	alreadyDead = false;
 	attackSpeed = 0.f;
 	attackMode = MIX;
+	attackTarget = NULL;
 	lastTimeInjured = 0.f;
+	isMoving = false;
 	//lastSkillTime = 0.f;
 
 	curHitPoints = hitPoints;         //初始设定为满值
@@ -112,6 +118,9 @@ Equipment* Fighter::changeMainEquip()    //待添加切换武器的音效
 
 bool Fighter::attack()
 {
+
+	//暂时没有攻击目标，所有先不用更新
+	//updateTarget();
 	if (attackTarget)
 	{
 		//图片路径尚未填写
@@ -125,11 +134,14 @@ bool Fighter::attack()
 	}
 	else if(!attackTarget)
 	{
-		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
-		bulletSprite->giveOut(fdirection);
+		auto bulletSprite = Bullet::create("11.png", damageAbility, 10, this, attackTarget);
+		if (!isMoving)
+			bulletSprite->giveOut(ldirection);
+		else
+			bulletSprite->giveOut(direction);
 		//bulletSprite->setPosition(this->getPosition());
 		//bulletSprite->setScale();
-		exploreScene->getMap()->addChild(bulletSprite);
+		exploreScene->addChild(bulletSprite);
 		exploreScene->flyingItem.pushBack(bulletSprite);
 		return true;
 	}
@@ -150,6 +162,7 @@ bool Fighter::isInMelee()           //判断enemy位于范围内，暂时不会�
 
 void Fighter::fighterMove()      //
 {
+	isMoving = true;
 	Vec2 current = this->getPosition();
 	switch (direction)
 	{
@@ -191,6 +204,7 @@ void Fighter::fighterMove()      //
 
 void Fighter::stand()
 {
+	isMoving = false;
 	switch (fdirection)
 	{
 	case EDirection::UP:

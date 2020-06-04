@@ -39,7 +39,6 @@ public:
 
 	//
 	virtual bool init(const std::string& filename, GameScene* Scene);
-	virtual void updateTarget();
 	virtual void die();
 	virtual bool attack();
 	virtual void takeDamage(DamageMode type, INT32 damage, MovingActor* enemy);

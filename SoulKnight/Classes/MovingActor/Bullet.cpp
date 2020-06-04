@@ -35,12 +35,13 @@ bool Bullet::init(const std::string& filename, INT32 damage, float flySpeed, Mov
 void Bullet::giveOut()
 {
 	auto velocityVector = _victim->getPosition() - getPosition();
-	setRotation(acos(velocityVector.x/velocityVector.getLength())/M_PI*180);
+	setAngle(acos(velocityVector.x / velocityVector.getLength()) / M_PI * 180);
+	setRotation(360-angle);
 }
 
 void Bullet::giveOut(EDirection Dir)
 {
-	int sita;
+	int sita = 0;
 
 	switch (Dir)
 	{
@@ -68,19 +69,24 @@ void Bullet::giveOut(EDirection Dir)
 	case EDirection::DOWNRIGHT:
 		sita = 7;
 		break;
+	case EDirection::NODIR:
+			sita = 2;
+			break;
 	default:
 		break;
 	}
-	
-	setRotation(sita / 4 * 180);
+	setAngle(sita*180/4);	
+	setRotation(360 - angle);
 }
+
 
 void Bullet::fly()
 {
-	auto velocityVector = _victim->getPosition() - getPosition();
+	//auto velocityVector = _victim->getPosition() - getPosition();
+
 	
-	auto velocityX = velocityVector.x / velocityVector.getLength() * getFlySpeed();
-	auto velocityY = velocityVector.y / velocityVector.getLength() * getFlySpeed();
+	auto velocityX = getFlySpeed() * cos(angle / 180 * M_PI);
+	auto velocityY = getFlySpeed() * sin(angle / 180 * M_PI);
 
 	setPosition(getPosition()+Vec2(velocityX,velocityY));
 }

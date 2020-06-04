@@ -1,9 +1,10 @@
 #include"Knight.h"
+#include"Scene/GameScene.h"
 //#include "HelloWorldScene.h"
 
 
 
-Knight* Knight::create(HelloWorld* Scene, std::string Name)
+Knight* Knight::create(GameScene* Scene, std::string Name)
 {
 	Knight* knight = new Knight();
 	if (knight && knight->init(Scene, Name))
@@ -18,7 +19,7 @@ Knight* Knight::create(HelloWorld* Scene, std::string Name)
 
 
 
-bool Knight::init(HelloWorld* Scene, std::string Name)
+bool Knight::init(GameScene* Scene, std::string Name)
 {
 	if (!Fighter::init(Scene, Name))
 	{

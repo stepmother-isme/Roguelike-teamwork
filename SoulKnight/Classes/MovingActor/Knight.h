@@ -19,9 +19,9 @@ public:
 
 	virtual bool isAlreadyDead();  //添加父类后继承用于判断是否GG
 
-	virtual bool init(HelloWorld* Scene, std::string Name);
+	virtual bool init(GameScene* Scene, std::string Name);
 
-	static Knight* create(HelloWorld* Scene,std::string Name);
+	static Knight* create(GameScene* Scene,std::string Name);
 
 	virtual void releaseSkill();               //发起技能
 

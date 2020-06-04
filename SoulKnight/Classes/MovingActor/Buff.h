@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-enum BuffType
+enum EBuffType
 {
 	VERTIGO,	//眩晕
 	FROZEN,     //冰冻
@@ -27,9 +27,14 @@ class Buff :public cocos2d::Sprite
 	CC_SYNTHESIZE(float, duration, Duration);   //持续时间
 	CC_SYNTHESIZE(float, beginTime, BeginTime); //开始时间
 	CC_SYNTHESIZE(float, endTime, EndTime);		//结束时间
-
+public:
+	bool init(EBuffType _bufftype,
+		int _buffHP, int _buffMP,
+		float _buffMoveSpeed, float _duration);
 	
-
+	static Buff* create(EBuffType _bufftype,
+		int _buffHP, int _buffMP,
+		float _buffMoveSpeed, float _duration);
 };
 
 

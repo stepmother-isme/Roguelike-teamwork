@@ -16,6 +16,8 @@ class Fighter :public MovingActor
 	CC_SYNTHESIZE(EAttackMode, attackMode, AttackMode);//设置攻击模式的切换 近战/远程
 	CC_SYNTHESIZE(EDirection, direction, Direction);//人物的移动方向
 	CC_SYNTHESIZE(EDirection, fdirection, FDirection);//人物的面向
+	CC_SYNTHESIZE(EDirection, ldirection, LDriection);//
+	CC_SYNTHESIZE(bool, isMoving, IsMoving);
 
 	CC_SYNTHESIZE(int, shield, Shield);                //护甲值上限
 	CC_SYNTHESIZE(int, curShield, CurShield);		   //当前护甲值
