@@ -1,7 +1,9 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-#include "Knight.h"
-#include"HelloWorldScene.h"
+#include "Controller/MoveCtrl.h"
+//#include "MovingActor/Knight.h"
+#include"MovingActor/HelloWorldScene.h"
+#include"MovingActor/TestMan.h"
 
 USING_NS_CC;
 
@@ -10,7 +12,6 @@ Scene* GameScene::createScene()
 	return GameScene::create();
 }
 
-//这是什么？？
 static void problemLoading(const char* filename)
 {
 	printf("Error while loading: %s\n", filename);
@@ -31,8 +32,18 @@ bool GameScene::init()
 	_origin = Director::getInstance()->getVisibleOrigin();
 	loadingAnimation();
 	initMapLayer();
-	initKnight();
+	//initKnight();
 	scheduleUpdate();
+
+	auto rocker = MoveController::createMoveController();
+	this->addChild(rocker);
+	_rocker = rocker;
+
+	Fighter* fighter;
+	fighter = Testman::create(this,"Ranger");
+	fighter->setPosition(512,384);
+	this->addChild(fighter);
+	_myFighter = fighter;
 
 	/*敌人生成
 	for (int i = 0; i < 4; i++)
@@ -52,7 +63,7 @@ bool GameScene::init()
     listenerKeyBoard->onKeyPressed = CC_CALLBACK_2(GameScene::onPressKey, this);
 	listenerKeyBoard->onKeyReleased = CC_CALLBACK_2(GameScene::onReleaseKey, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerKeyBoard, this);
-	listenerTouch->setSwallowTouches(false);
+	//listenerTouch->setSwallowTouches(false);
 
 
 	return true;
@@ -94,15 +105,33 @@ void GameScene::loadingAnimation()
 }
 
 //更新主角位置
-void updateKnightPosition()
+void GameScene::updateKnightPosition()
 {
+	_myFighter->setFDirection ( _rocker->getFirstDirection());
+	_myFighter->setLDriection(_rocker->getLastDirection());
+	_myFighter->setDirection(_rocker->getDirection());
+	_myFighter->fighterMove();
+	_myFighter->stand();
+}
 
+void GameScene::updateFlyingItem()
+{
+	for (auto current = flyingItem.begin(); current != flyingItem.end();)
+	{
+		(*current)->fly();
+		current++;
+	}
 }
 
 
 //帧更新
 void GameScene::update(float delta)
 {
+	updateKnightPosition();
+	updateFlyingItem();
+
+
+
 	/*子弹击中判断
 	for (auto it = _bullets.begin(); it != _bullets.end();)
 	{
@@ -157,6 +186,11 @@ void GameScene::CircleDamage(Point point, float radius, float damage)
 
 bool GameScene::onPressKey(EventKeyboard::KeyCode keyCode, Event* event)
 {
+	auto test = dynamic_cast<Testman*>(_myFighter);
+	if (keyCode == EventKeyboard::KeyCode::KEY_J)
+	{
+		test->attack();
+	}
 	keys[keyCode] = true;
 	return true;
 }

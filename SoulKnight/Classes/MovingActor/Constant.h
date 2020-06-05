@@ -14,8 +14,9 @@
 /* 
 *没有具体测量，暂时设置500  
 */
-#define INIT_MOVESPEED 1.0
+#define INIT_MOVESPEED 3.0
 #define INIT_EQUIP_NUMBER 2
+
 
 enum EAttackMode	//	攻击模式,可以是武器的攻击模式，也可是怪物的攻击模式
 {
@@ -25,8 +26,8 @@ enum EAttackMode	//	攻击模式,可以是武器的攻击模式，也可是怪物的攻击模式
 };
 enum DamageMode      //伤害类型	
 {
-	//瞬时伤害
-	//持续伤害
+	POISONING,
+	COMMON,
 };
 
 enum AllCamp        //阵营
@@ -35,10 +36,19 @@ enum AllCamp        //阵营
 	ENEMY
 };
 //可能会定义的
+enum EEQUIPMENT
+{
+	POJIUDESHOUQIANG,
+	AK47,
+	GANCAOCHA,
+	NOTHING
+	//TBD
+};
 
 //可能会定义的方向枚举类型
 enum EDirection
 {
+	NODIR,
 	UP,
 	DOWN,
 	LEFT,
