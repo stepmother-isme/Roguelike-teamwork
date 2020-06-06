@@ -64,7 +64,7 @@ bool StartGame::init()
 	}
 	else
 	{
-		float x = visibleSize.width / 4 * 3;
+		float x = visibleSize.width / 4*3;
 		float y = visibleSize.height - 550;
 		helpMenu->setPosition(Vec2(x, y));
 	}
@@ -88,7 +88,7 @@ bool StartGame::init()
 		exitMenu->setPosition(Vec2(x, y));
 	}
 
-
+	
 	auto offMusic = MenuItemImage::create("ArtDesigning/SceneAndMap/StartGame/on.png", "on.png");
 	auto onMusic = MenuItemImage::create("ArtDesigning/SceneAndMap/StartGame/off.png", "off.png");
 	offMusic->setScale(0.5);
@@ -97,31 +97,30 @@ bool StartGame::init()
 		CC_CALLBACK_1(StartGame::menuAudioCallBack, this),
 		offMusic, onMusic, NULL
 	);
-	audioMenu->setPosition(Vec2(visibleSize.width / 6 * 5 + 40, visibleSize.height - 180));
+	audioMenu->setPosition(Vec2(visibleSize.width / 6*5+30, visibleSize.height - 180));
 
-
-	Menu* mu = Menu::create(startMenu, helpMenu, exitMenu, audioMenu, NULL);
+	
+	Menu* mu = Menu::create(startMenu, helpMenu, exitMenu,audioMenu, NULL);
 	mu->setPosition(Vec2::ZERO);
 	this->addChild(mu, 1);
 
-	auto background = Sprite::create("ArtDesigning/SceneAndMap/SafeMap/StartGameBackground.png");
+	auto background = CCTMXTiledMap::create("ArtDesigning/SceneAndMap/StartGame/StartGameBackground.tmx");
 	if (background == nullptr)
-
 	{
 		problemLoading("'StartGameBackground.png'");
 	}
 	else
 	{
+		background->setAnchorPoint(Vec2(0.5, 0.5));
 		background->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-		this->addChild(background, 0);
+	    this->addChild(background, 0);
 	}
-
 	return true;
 }
 
 void StartGame::menuStartCallBack(cocos2d::Ref* pSender)
 {
-
+	
 	//转到安全地图
 	auto nextScene = SafetyMap::create();
 	Director::getInstance()->replaceScene(
@@ -142,7 +141,7 @@ void StartGame::menuHelpCallBack(cocos2d::Ref* pSender)
 
 
 	log("Touch Start Menu Item %p", item);
-	//游戏规则最后写	
+//游戏规则最后写	
 }
 void StartGame::menuExitCallBack(cocos2d::Ref* pSender)
 {
