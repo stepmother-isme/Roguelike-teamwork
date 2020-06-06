@@ -5,10 +5,14 @@
 #include "cocos2d.h"
 #include <map>
 
+USING_NS_CC;
 class SafetyMap :public cocos2d::Scene
 {
-	//CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
+	CC_SYNTHESIZE(cocos2d::TMXTiledMap*, _map, Map);
 	cocos2d::TMXTiledMap* _tileMap;
+
+	
+
 private:
 	//≥ı ºªØ
 	void initMapLayer();
@@ -16,8 +20,8 @@ public:
 	static cocos2d::Scene* createScene();
 
 	virtual bool init();
-	void initFighter();
 	void menuAudioCallBack(cocos2d::Ref* pSender);
+	void menuTestManCallBack(cocos2d::Ref* pSender);
 
 	CREATE_FUNC(SafetyMap);
 };
