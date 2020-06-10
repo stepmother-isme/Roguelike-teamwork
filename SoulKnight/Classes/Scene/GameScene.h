@@ -5,6 +5,7 @@
 #include "MovingActor/Knight.h"
 #include "MovingActor/MovingActor.h"
 #include "MovingActor/Bullet.h"
+#include "MovingActor/Equipment.h"
 #include "Controller/MoveCtrl.h"
 #include <vector>
 
@@ -63,6 +64,7 @@ public:
 	Vector<MovingActor*> enemyBoss;
 	Vector<MovingActor*> allFighter;
 	Vector<Bullet*> flyingItem;
+	Vector<Equipment*> allWeapon;
 	//Vector<UnMovingActor*> allNpc;
 
 

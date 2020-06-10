@@ -31,12 +31,13 @@ bool Enemy::initData(GameScene* Scene, std::string Name)
 	exploreScene = Scene;
 	enemyName = Name;
 	camp = AllCamp::ENEMY;
+	
+	setTexture(CCString::createWithFormat("%s",enemyName)->getCString());
 
 	alreadyDead = false;
 	attackSpeed = 0.f;
 
 	curHitPoints = hitPoints;
-	//暂定
 	attackRadius = 500;
 	return true;
 }
@@ -45,11 +46,16 @@ void  Enemy::updateTarget()
 {
 	MovingActor* tempTarget = NULL;
 	Vector<MovingActor*>& allFighter = exploreScene->allFighter;
+
 	//先按照只有一名玩家处理
 	auto temp = allFighter.begin();
 	auto tempRadius = identityRadius;
+
+
 	if (!(*temp)->getAlreadyDead() && tempRadius > (*temp)->getPosition().getDistance(this->getPosition()))
 		tempTarget = *temp;
+
+
 	attackTarget = tempTarget;
 }
 
@@ -92,12 +98,16 @@ bool Enemy::attack()
 
 	if (attackTarget)
 	{
-		//图片路径尚未填写
-		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
+		auto bulletSprite = Bullet::create(CCString::createWithFormat("%sBullet",enemyName)->getCString(), damageAbility, flySpeed, this, attackTarget);
+		
+		//对飞行物的调整
 		bulletSprite->setPosition(this->getPosition());
 		//bulletSprite->setScale();
+		
+		//将飞行物放入场景的容器之中
 		exploreScene->getMap()->addChild(bulletSprite);
 		exploreScene->flyingItem.pushBack(bulletSprite);
+		
 		return true;
 	}
 	return true;

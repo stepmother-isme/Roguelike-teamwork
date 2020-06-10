@@ -31,8 +31,11 @@ class Fighter :public MovingActor
 
 	CC_SYNTHESIZE(String, fighterName, FighterName);	//获取角色名
 	CC_SYNTHESIZE(int, equipNumber, EquipNumber);     //所能携带的武器数量
+	CC_SYNTHESIZE(Equipment*, currentWeapon, CurrentWeapon);  //当前武器
 
 	//5.27从子类移至父类
+	CC_SYNTHESIZE(float, lastAttackTime, LastAttackTime);    
+	CC_SYNTHESIZE(float,lastReleaseTime,LastReleaseTime);
 	CC_SYNTHESIZE(float, lastSkillTime, LastSkillTime);      //技能持续时间
 	CC_SYNTHESIZE(float, skillCDTime, SkillCDTime);			//技能冷却时间
 
@@ -40,9 +43,11 @@ class Fighter :public MovingActor
 
 public:
 
+	Vector<Equipment*> myWeapon;
+
 	virtual bool isFullEquipments();               //判断是否带满武器
 
-	//Equipment* getEquipByNumber(int equipNumber);  //获得武器
+	virtual void getWeapon(Equipment* available);  //获得武器
 
 	Equipment* changeMainEquip();  //切换主武器
 
@@ -67,6 +72,8 @@ public:
 	virtual bool isZeroSheild();           //判定护甲值是否为0
 	
 	virtual void updateTarget();            //刷新攻击目标
+
+	virtual void hurt(INT32 damage);                    //受伤
 
 protected:
 

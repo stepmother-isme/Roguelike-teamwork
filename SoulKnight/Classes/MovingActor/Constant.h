@@ -24,6 +24,13 @@ enum EAttackMode	//	攻击模式,可以是武器的攻击模式，也可是怪物的攻击模式
 	REMOTE,			//	远程
 	MIX				//  混合
 };
+
+enum WeaponStatus
+{
+	GROUND,
+	TAKEN
+};
+
 enum DamageMode      //伤害类型	
 {
 	POISONING,
