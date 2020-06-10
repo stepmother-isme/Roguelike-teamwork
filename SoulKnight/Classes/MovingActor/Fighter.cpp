@@ -222,6 +222,7 @@ void Fighter::fighterMove()      //
 	default:
 		break;
 	}
+	ldirection = direction;
 	this->setPosition(current);
 }
 

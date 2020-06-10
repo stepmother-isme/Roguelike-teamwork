@@ -3,6 +3,7 @@
 #define __EQUIPMENT_H__
 #include<iostream>
 #include"cocos2d.h"
+#include"MovingActor/Fighter.h"
 #include"Constant.h"
 
 USING_NS_CC;
@@ -12,6 +13,7 @@ class Equipment :public cocos2d::Sprite
 {
 public:
 
+	CC_SYNTHESIZE(Fighter*, onwer, Onwer);
 	CC_SYNTHESIZE(EAttackMode, equipType, EquipType);    //定义武器类型，远程or近战
 	CC_SYNTHESIZE(EEQUIPMENT, equipName, EquipName);	   //武器名字
 	
@@ -19,7 +21,7 @@ public:
 	CC_SYNTHESIZE(int, attackNumber, AttackNumber);					 //攻击力数值
 	CC_SYNTHESIZE(float, attackSpeedNumber, AttackSpeedNumber);		//攻击速度数值
 	CC_SYNTHESIZE(float, flySpeed, FlySpeed);						//其子弹的飞行速度
-	CC_SYNTHESIZE(WeaponStatus, status, Status);    
+	CC_SYNTHESIZE(WeaponStatus, status, Status);					//武器的位置，人身上或地上
 
 	//如果是近战武器，则应有
 	CC_SYNTHESIZE(int, attackRadius, AttackRadius);               //攻击半径
