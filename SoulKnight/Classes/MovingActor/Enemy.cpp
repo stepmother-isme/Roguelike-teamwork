@@ -115,4 +115,6 @@ bool Enemy::attack()
 
 void Enemy::die()
 {
+	setVisible(false);
+	alreadyDead = true;
 }

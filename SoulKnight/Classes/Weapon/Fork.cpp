@@ -35,6 +35,10 @@ bool Fork::init(EAttackMode _equipType, EEQUIPMENT _equipname, int _attack,
 	attackRadius = _attackRadius;
 
 	manaConsume = _manaConsume;
+
+	this->setTexture("ArtDesigning\\FlyingItem\\Weapon\\Fork.png");
+	this->setDamageRect(CCRectMake(0, 0, 20, 60));
+
 	return true;
 }
 
