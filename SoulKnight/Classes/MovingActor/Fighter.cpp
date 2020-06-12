@@ -2,6 +2,7 @@
 #include"MovingActor/Fighter.h"
 #include"MovingActor/Constant.h"
 #include"MovingActor/Bullet.h"
+#include"MovingActor/Equipment.h"
 #include"Scene/GameScene.h"
 
 #include<set>
@@ -44,27 +45,27 @@ bool Fighter::init(GameScene* Scene, std::string fighterName)
 
 bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 {
-	//ValueMap value = FileUtils::getInstance()->getValueMapFromFile("FightersData.plist");
-	//initFighterData = value.at(Name).asValueMap();
+	ValueMap value = FileUtils::getInstance()->getValueMapFromFile("FightersData.plist");
+	initFighterData = value.at(Name).asValueMap();
 
 	exploreScene = Scene;
 	fighterName = Name;
 	camp = AllCamp::FRIENDLY;
 
-	//hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
-	//moveSpeed = initFighterData["MovingSpeed"].asFloat();
-	//shield = initFighterData["shield"].asInt();
-	//acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
-	//manaPoints = initFighterData["manaPoints"].asInt();
-	//critRate = initFighterData["critRate"].asFloat();
- // lastSkillTime = initFighterData["skillLastTime"].asFloat();
-	//skillCDTime = initFighterData["skillCD"].asFloat();
+	hitPoints = initFighterData["hitPoints"].asInt();     //利用plist的键值对
+	moveSpeed = initFighterData["MovingSpeed"].asFloat();
+	shield = initFighterData["shield"].asInt();
+	acRcoverSpeed = initFighterData["ACRecoverRate"].asInt();
+	manaPoints = initFighterData["manaPoints"].asInt();
+	critRate = initFighterData["critRate"].asFloat();
+  lastSkillTime = initFighterData["skillLastTime"].asFloat();
+	skillCDTime = initFighterData["skillCD"].asFloat();
 
 
 	//测试用
 	setTexture(StringUtils::format("downDir.png"));
 
-	identityRadius = INIT_ID_RADIUS;//初始感知半径500，boss可能会更大
+	identityRadius = INIT_ID_RADIUS;
   
 
 	equipNumber = INIT_EQUIP_NUMBER;
@@ -93,40 +94,35 @@ bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 
 bool Fighter::isFullEquipments()
 {
-	for (int i = 0; i < INIT_EQUIP_NUMBER; ++i)    //++i???不甚理解可能存在bug
-	{
-		if (equips[i] = nullptr)
-		{
-			return false;
-		}
-
-	}
-	return true;
+	if (myWeapon.size() == 2)
+		return true;
+	return false;
 }
 
 Equipment* Fighter::changeMainEquip()    //待添加切换武器的音效
 {
-	if (isFullEquipments() == false)
+	if (isFullEquipments())
 	{
-		return equips[0];
-	}
-	else
-	{
-		return equips[1];
+		for (auto it=myWeapon.begin();it!=myWeapon.end();it++)
+		{
+			if (currentWeapon != *it)
+				return *it;
+		}
 	}
 }
 
 bool Fighter::attack()
 {
+	updateTarget();
 
-	//暂时没有攻击目标，所有先不用更新
-	//updateTarget();
 	if (attackTarget)
 	{
-		//图片路径尚未填写
-		auto bulletSprite = Bullet::create("", damageAbility, flySpeed, this, attackTarget);
+		auto bulletSprite = Bullet::create( CCString::createWithFormat("%sBullet", currentWeapon->getWeaponName())->getCString(), 
+											currentWeapon->getAttackNumber(), 
+											currentWeapon->getFlySpeed(),
+											this, 
+											attackTarget);
 		bulletSprite->giveOut();
-		//bulletSprite->setPosition(this->getPosition());
 		//bulletSprite->setScale();
 		exploreScene->getMap()->addChild(bulletSprite);
 		exploreScene->flyingItem.pushBack(bulletSprite);
@@ -134,12 +130,16 @@ bool Fighter::attack()
 	}
 	else if(!attackTarget)
 	{
-		auto bulletSprite = Bullet::create("11.png", damageAbility, 10, this, attackTarget);
+		auto bulletSprite = Bullet::create( CCString::createWithFormat("%sBullet", currentWeapon->getWeaponName())->getCString(),
+											currentWeapon->getAttackNumber(),
+											currentWeapon->getFlySpeed(),
+											this,
+											attackTarget);
+
 		if (!isMoving)
 			bulletSprite->giveOut(ldirection);
 		else
 			bulletSprite->giveOut(direction);
-		//bulletSprite->setPosition(this->getPosition());
 		//bulletSprite->setScale();
 		exploreScene->addChild(bulletSprite);
 		exploreScene->flyingItem.pushBack(bulletSprite);
@@ -157,7 +157,30 @@ bool Fighter::isInMelee()           //判断enemy位于范围内，暂时不会�
 	return false;
 }
 
+void Fighter::hurt(INT32 damage)
+{
+	int currentDamage = damage;
+	if (!isZeroSheild())
+	{
+		if (currentDamage >= shield)
+		{
+			currentDamage -= shield;
+			shield = 0;
+		}
+		else
+		{
+			shield -= currentDamage;
+			currentDamage = 0;
+		}
+	}
 
+	if (currentDamage > 0)
+		hitPoints -= currentDamage;
+	currentDamage = 0;
+
+	if (hitPoints <= 0)
+		die();
+}
 
 
 void Fighter::fighterMove()      //
@@ -199,6 +222,7 @@ void Fighter::fighterMove()      //
 	default:
 		break;
 	}
+	ldirection = direction;
 	this->setPosition(current);
 }
 
@@ -208,16 +232,16 @@ void Fighter::stand()
 	switch (fdirection)
 	{
 	case EDirection::UP:
-		//setTexture();
+		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sUp",fighterName)->getCString());
 		break;
 	case EDirection::DOWN:
-		//setTexture();
+		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sDown", fighterName)->getCString());
 		break;
 	case EDirection::LEFT:
-		//setTexture();
+		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sLeft", fighterName)->getCString());
 		break;
 	case EDirection::RIGHT:
-		//setTexture();
+		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sRight", fighterName)->getCString());
 		break;
 	}
 	direction = EDirection::NODIR;
@@ -253,7 +277,7 @@ void Fighter::updateTarget()
 
 void Fighter::playAttackAnimation()
 {
-	//这个东西不好写啊
+	//
 }
 
 
@@ -266,6 +290,20 @@ bool Fighter::isZeroSheild()
 	return false;
 }
 
+void Fighter::getWeapon(Equipment* available)
+{
+	if (myWeapon.size() == equipNumber)
+	{
+		for (auto it = myWeapon.begin(); it != myWeapon.end(); it++)
+			if (currentWeapon == *it)
+			{
+				(*it)->setStatus(WeaponStatus::GROUND);
+				exploreScene->allWeapon.pushBack(*it);
+				*it = available;
+			}
+	}
+}
+
 
 void Fighter::die()
 {
@@ -276,15 +314,13 @@ void Fighter::die()
 	//	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/YouHaveBeenSlained.wav", false, 1, 0, 1.2);
 	//}
 	//学长的参考代码
-
-	//setVisible(false);或是显示英雄倒地变黑不再战斗
-
-
+	
+	setVisible(false);
 	alreadyDead = true;
 	//进入结算页面
 }
 
 void Fighter::releaseSkill()
 {
-//继承下至具体英雄写	
+     //继承下至具体英雄写	
 }

@@ -7,7 +7,6 @@
 
 USING_NS_CC;
 
-
 Scene* SafetyMap::createScene()
 {
 	return SafetyMap::create();
@@ -73,9 +72,9 @@ bool SafetyMap::init()
 	mu->setPosition(Vec2::ZERO);
 	this->addChild(mu, 1);
 
-
 	return true;
 }
+
 void SafetyMap::initMapLayer()
 {
 

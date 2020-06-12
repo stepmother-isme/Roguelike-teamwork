@@ -33,36 +33,91 @@ bool Knight::init(GameScene* Scene, std::string Name)
 }
 
 
-
-bool Knight::isAlreadyDead()
+void Knight::releaseSkill()
 {
-	if (curHitPoints == 0)
+	auto nowTime = GetCurrentTime();
+	isRelease = true;
+	lastReleaseTime = nowTime;
+}
+
+void Knight::fullForce()
+{
+	auto nowTime = GetCurrentTime();
+	if (nowTime - lastReleaseTime >= lastSkillTime&&isRelease)
+		stopSkill();
+}
+
+void Knight::stopSkill()
+{
+	isRelease = false;
+}
+
+bool Knight::attack()
+{
+	auto nowTime = GetCurrentTime();
+	if (nowTime - lastAttackTime < currentWeapon->getAttackSpeedNumber())
+		return false;
+
+
+	int fireTimes;
+	updateTarget();
+
+
+
+	if (isRelease)
+		fireTimes = 2;
+	else
+		fireTimes = 1;
+		
+
+	if (attackTarget)
 	{
+		for (int i = 0; i < fireTimes; i++)
+		{
+			auto bulletSprite = Bullet::create(CCString::createWithFormat("%sBullet", currentWeapon->getWeaponName())->getCString(),
+				currentWeapon->getAttackNumber(),
+				currentWeapon->getFlySpeed(),
+				this,
+				attackTarget);
+			bulletSprite->giveOut();
+			//bulletSprite->setScale();
+
+			if (isRelease)
+				bulletSprite->setPosition(Vec2(this->getPosition().x,this->getPosition().y+(2*i-1)*20));
+
+			exploreScene->getMap()->addChild(bulletSprite);
+			exploreScene->flyingItem.pushBack(bulletSprite);
+		}
+		lastAttackTime = GetCurrentTime();
+		return true;
+	}
+	else if (!attackTarget)
+	{
+		for (int i = 0; i < fireTimes; i++)
+		{
+			auto bulletSprite = Bullet::create(CCString::createWithFormat("%sBullet", currentWeapon->getWeaponName())->getCString(),
+				currentWeapon->getAttackNumber(),
+				currentWeapon->getFlySpeed(),
+				this,
+				attackTarget);
+
+			if (!isMoving)
+				bulletSprite->giveOut(ldirection);
+			else
+				bulletSprite->giveOut(direction);
+
+			if (isRelease)
+				bulletSprite->setPosition(Vec2(this->getPosition().x, this->getPosition().y + (2 * i - 1) * 20));
+
+			//bulletSprite->setScale();
+			exploreScene->addChild(bulletSprite);
+			exploreScene->flyingItem.pushBack(bulletSprite);
+		}
+		lastAttackTime = GetCurrentTime();
 		return true;
 	}
 
 	return false;
-}
-
-
-
-void Knight::setPosition(const cocos2d::Vec2& newPosition)
-{
-
-
-};
-
-
-
-
-void Knight::releaseSkill()
-{
-	
-	//双枪目前还不知怎么写
-	//攻速加成buff和移速buff将会在buff类之后更新
-
-	
-	
 }
 
 

@@ -29,6 +29,7 @@ class MovingActor :public cocos2d::Sprite
 	CC_SYNTHESIZE(GameScene*, exploreScene, ExploreScene);   //加入场景
 	CC_SYNTHESIZE(MovingActor*,attackFrom, AttackFrom);//伤害来源
 	CC_SYNTHESIZE(MovingActor*, attackTarget, AttackTarget);//攻击目标
+	CC_SYNTHESIZE(cocos2d::CCSize, bodySize, BodySize);
 
 protected:
 
