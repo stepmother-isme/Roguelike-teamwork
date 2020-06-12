@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="3">
+ <tileset firstgid="1" name="source1" tilewidth="32" tileheight="32" tilecount="128" columns="8">
+  <image source="source1.png" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="129" name="collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="collision.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="130" name="source3" tilewidth="32" tileheight="32" tilecount="192" columns="16">
+  <image source="source3.png" width="512" height="384"/>
+  <tile id="13">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="322" name="source4" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+  <image source="source4.png" width="512" height="512"/>
+ </tileset>
+ <layer id="6" name="collision" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztllEKgDAMQ3f13dxfEYrYZTR1LxAEYUkf0+kcY8yfWKGq3nu3Mut0jpVZHDky++XEoehWZnXnqBQcXoLDS5xXcRYc33re7mUFh65bmVXJ4eZu88LRw3B4GQ4vw+FlOLwMh5ezHAqdzKESHHFWlmNlDjjirO7PVaXg8BIcXup+Xs3b9XSO59qq70c2L5plN0e0Zmfezv2I/mk6vx8r3a6+ADp4PRA=
+  </data>
+ </layer>
+ <layer id="4" name="ground" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztmcEKwjAQRPOl2pP1pJ7Uk/rpJodAKQ7CJHXHMAPv2slr6UK7KY2TXWbfwBTUu+4+ZOYGjqRHa++62x72sMd2HgVm1rR2buERhT206O1xJlDzKNe6EajNq5E8mNhjbI9T4uZN5UJ6oF505m/d18S9p5U76YF6Pz0nNEuW3Y/Ms4EX6YF6kUfP7l8Eefxb7KEVe2jFHlqxh1bsoRXWI2pvgMJ6RH1HofuHerz/sIc94jwK3hvYwx4Y7w20PJj/d4oeTOwxtkfk3mDu2B25N6jd7Blq9xs223Tc
+  </data>
+ </layer>
+ <layer id="7" name="tree" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1UsOQEAQRdFmG7bgM/fdDDtgz1iBoTcRiTBB6FTuSWraVa9rUM4BdsWhc0n49xTPlcpQqQpVpMoNZAIAAOdS3fnMwK2vlaExkAMAAAAAAB+Nwd8TvGMxkgMALOPm7Fq90XnwH3d3ss3fq4YPc0zqNZ/0u7uTr+c/usoDv6wxDg8P
+  </data>
+ </layer>
+ <layer id="5" name="fence" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt2bENgDAMBMDs37ABbAArEtpUaRwZ50760sU3liW3BsDfnD3Xgplod8+zYCaaHrlU6QGwq28nH0PsaAAAqnDvAlH8DXLRI5cqPQCY9wLMRiH3
+  </data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="SpawnPoint" x="119" y="1224" width="284" height="274">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>
