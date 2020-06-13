@@ -5,7 +5,6 @@
 #include "MovingActor/Knight.h"
 #include "MovingActor/MovingActor.h"
 #include "MovingActor/Bullet.h"
-#include "MovingActor/Equipment.h"
 #include "Controller/MoveCtrl.h"
 #include <vector>
 
@@ -32,15 +31,18 @@ class GameScene : public cocos2d::Scene
 	CC_SYNTHESIZE(Size, _visibleSize, VisibleSize);
 	CC_SYNTHESIZE(Vec2, _origin, Origin);
 	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
-
+	CC_SYNTHESIZE(MapInfo, _mapInformation, MapInformation);
+	cocos2d::TMXTiledMap* _tileMap;
+	Fighter* fighter;
 private:
 	//初始化
 	void generateEnemies(float delta);
 	void initMapLayer();
-	void initKnight();
+	void initFighter();
+	void initListener();
 	//更新角色位置
-	void updateKnightPosition();
-
+	void updateFighterPosition();
+	void setViewpointCenter(CCPoint position);
 	void updateFlyingItem();
 
 	//更新攻击目标
@@ -57,6 +59,11 @@ private:
 	//判断是否一直被按住
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
+	
+	void setViewpointCenter(CCPoint position);
+	void setSpritePoint(CCPoint position);
+	CCPoint tileCoordForPosition(CCPoint position);
+
 
 public:
 	//可以公开使用的一些容器
@@ -64,7 +71,6 @@ public:
 	Vector<MovingActor*> enemyBoss;
 	Vector<MovingActor*> allFighter;
 	Vector<Bullet*> flyingItem;
-	Vector<Equipment*> allWeapon;
 	//Vector<UnMovingActor*> allNpc;
 
 
