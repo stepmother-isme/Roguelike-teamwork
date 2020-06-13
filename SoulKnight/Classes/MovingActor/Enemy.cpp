@@ -32,7 +32,6 @@ bool Enemy::initData(GameScene* Scene, std::string Name)
 	enemyName = Name;
 	camp = AllCamp::ENEMY;
 	
-	setTexture(CCString::createWithFormat("%s",enemyName)->getCString());
 
 	alreadyDead = false;
 	attackSpeed = 0.f;

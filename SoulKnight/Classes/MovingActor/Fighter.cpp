@@ -63,7 +63,7 @@ bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 
 
 	//测试用
-	setTexture(StringUtils::format("ArtDesigning\\Sprite\\Fighter\\KnightDown.png"));
+	setTexture(StringUtils::format("ArtDesigning/Sprite/Fighter/KnightDown.png"));
 
 	identityRadius = INIT_ID_RADIUS;
   
@@ -232,16 +232,16 @@ void Fighter::stand()
 	switch (fdirection)
 	{
 	case EDirection::UP:
-		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sUp",fighterName)->getCString());
+		setTexture(CCString::createWithFormat("ArtDesigning/Sprite/Fighter/%sUp",fighterName)->getCString());
 		break;
 	case EDirection::DOWN:
-		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sDown", fighterName)->getCString());
+		setTexture(CCString::createWithFormat("ArtDesigning/Sprite/Fighter/%sDown", fighterName)->getCString());
 		break;
 	case EDirection::LEFT:
-		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sLeft", fighterName)->getCString());
+		setTexture(CCString::createWithFormat("ArtDesigning/Sprite/Fighter/%sLeft", fighterName)->getCString());
 		break;
 	case EDirection::RIGHT:
-		setTexture(CCString::createWithFormat("ArtDesigning\\Sprite\\Fighter\\%sRight", fighterName)->getCString());
+		setTexture(CCString::createWithFormat("ArtDesigning/Sprite/Fighter/%sRight", fighterName)->getCString());
 		break;
 	}
 	direction = EDirection::NODIR;
