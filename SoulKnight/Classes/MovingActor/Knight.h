@@ -2,11 +2,12 @@
 #define __KNIGHT_H__
 #include "cocos2d.h"
 #include "Fighter.h"
-
+#include"MovingActor/Constant.h"
 
 USING_NS_CC;
 
-class HelloWorld;
+
+class GameScene;
 
 class Knight :public Fighter
 {

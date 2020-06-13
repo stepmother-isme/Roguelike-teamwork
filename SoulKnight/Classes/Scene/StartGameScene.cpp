@@ -135,14 +135,14 @@ void StartGame::menuHelpCallBack(cocos2d::Ref* pSender)
 {
 	//转到help scene
 	auto nextScene = Help::create();
-	Director::getInstance()->replaceScene(
-		TransitionSlideInT::create(1.0f / 60, nextScene));
+	Director::getInstance()->pushScene(nextScene);
 	MenuItem* item = static_cast<MenuItem*>(pSender);
 
 
 	log("Touch Start Menu Item %p", item);
 //游戏规则最后写	
 }
+
 void StartGame::menuExitCallBack(cocos2d::Ref* pSender)
 {
 	Director::getInstance()->end();//退出

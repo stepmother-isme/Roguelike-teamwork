@@ -31,12 +31,6 @@ enum WeaponStatus
 	TAKEN
 };
 
-enum EnemyLevel
-{
-	SOLDIER,
-	BOSS
-};
-
 enum DamageMode      //…À∫¶¿‡–Õ	
 {
 	POISONING,

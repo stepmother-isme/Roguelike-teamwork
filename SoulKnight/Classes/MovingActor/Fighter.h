@@ -5,11 +5,10 @@
 #include "MovingActor/MovingActor.h"
 #include "MovingActor/Constant.h"
 #include "MovingActor/Enemy.h"
-
+#include "MovingActor/Equipment.h"
 
 USING_NS_CC;
 
-class Equipment;
 
 class Fighter :public MovingActor
 {
@@ -39,7 +38,7 @@ class Fighter :public MovingActor
 	CC_SYNTHESIZE(float, lastSkillTime, LastSkillTime);      //技能持续时间
 	CC_SYNTHESIZE(float, skillCDTime, SkillCDTime);			//技能冷却时间
 
-	
+	CCSprite *m_sprite;
 
 public:
 
@@ -57,7 +56,9 @@ public:
 
 	virtual void releaseSkill();               //发起技能
 
-	virtual void fighterMove();               //发起移动
+	virtual void fighterMove(Vec2);               //发起移动
+
+	virtual Vec2 updateDestination();      
 
 	virtual void stand();                     //停止移动后英雄的面向
 
@@ -75,6 +76,7 @@ public:
 
 	virtual void hurt(INT32 damage);                    //受伤
 
+	void bindSprite(CCSprite* sprite);
 protected:
 
 

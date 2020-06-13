@@ -23,6 +23,7 @@ public:
 	virtual bool init();
 	void menuAudioCallBack(cocos2d::Ref* pSender);
 	void menuTestManCallBack(cocos2d::Ref* pSender);
+	void menuMenuCallBack(cocos2d::Ref* pSender);
 
 	CREATE_FUNC(SafetyMap);
 };

@@ -1,6 +1,7 @@
 #include "SafetyMapScene.h"
 #include "StartGameScene.h"
 #include "testmanSelectScene.h"
+#include "MenuScene.h"
 #include "SimpleAudioEngine.h" 
 #include "MovingActor/Constant.h"
 #include "cocos2d.h"
@@ -57,6 +58,24 @@ bool SafetyMap::init()
 		testManMenu->setPosition(Vec2(x, y));
 	}
 
+	MenuItemImage* menuMenu = MenuItemImage::create(
+		"ArtDesigning/Word&Others/button/MENU.png",
+		"ArtDesigning/Word&Others/button/MENU.png",
+		CC_CALLBACK_1(SafetyMap::menuMenuCallBack, this)
+	);
+
+	if (menuMenu == nullptr ||
+		menuMenu->getContentSize().width <= 0 ||
+		menuMenu->getContentSize().height <= 0)
+	{
+		problemLoading("'menuMenu .png'");
+	}
+	else
+	{
+		float x = visibleSize.width / 4 * 3;
+		float y = visibleSize.height - 300;
+		menuMenu->setPosition(Vec2(visibleSize.width / 6 * 5 + 30, visibleSize.height - 180));
+	}
 	
 	auto offMusic = MenuItemImage::create("ArtDesigning/SceneAndMap/StartGame/on.png", "on.png");
 	auto onMusic = MenuItemImage::create("ArtDesigning/SceneAndMap/StartGame/off.png", "off.png");
@@ -69,13 +88,14 @@ bool SafetyMap::init()
 	audioMenu->setPosition(Vec2(visibleSize.width / 6 * 5 + 30, visibleSize.height - 180));
 
 
-	Menu* mu = Menu::create(testManMenu,audioMenu, NULL);
+	Menu* mu = Menu::create(testManMenu,menuMenu, NULL);
 	mu->setPosition(Vec2::ZERO);
 	this->addChild(mu, 1);
 
 
 	return true;
 }
+
 void SafetyMap::initMapLayer()
 {
 
@@ -90,12 +110,16 @@ void SafetyMap::initMapLayer()
 	 addChild(_map, 0, 10000);//
 }
 
-
-/*void StartGame::menuStartCallBack(cocos2d::Ref* pSender)
+void SafetyMap::menuMenuCallBack(cocos2d::Ref* pSender)
 {
+	//转到菜单项(可返回)
+	auto nextScene = MenuScene::create();
+	Director::getInstance()->pushScene(nextScene);
+	MenuItem* item = static_cast<MenuItem*>(pSender);
 
-	
-}*/
+
+	log("Touch Menu Menu Item %p", item);
+}
 
 void SafetyMap::initDiamond() 
 {
@@ -103,6 +127,7 @@ void SafetyMap::initDiamond()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();//获得可视区域的出发点坐标，在处理相对位置时，确保节点在不同分辨率下的位置一致。
 
 }
+
 void SafetyMap::menuTestManCallBack(cocos2d::Ref* pSender)
 {
 	//转到testmanSelect
@@ -113,6 +138,7 @@ void SafetyMap::menuTestManCallBack(cocos2d::Ref* pSender)
 
 	log("Touch testmanSelect Menu Item %p", item);
 }
+
 void SafetyMap::menuAudioCallBack(cocos2d::Ref* pSender)
 {
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
