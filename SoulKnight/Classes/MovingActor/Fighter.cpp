@@ -63,7 +63,7 @@ bool Fighter::initHeroData(GameScene* Scene, std::string Name)
 
 
 	//测试用
-	setTexture(StringUtils::format("downDir.png"));
+	setTexture(StringUtils::format("ArtDesigning\\Sprite\\Fighter\\KnightDown.png"));
 
 	identityRadius = INIT_ID_RADIUS;
   
