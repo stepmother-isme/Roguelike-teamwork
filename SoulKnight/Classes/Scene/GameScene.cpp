@@ -1,8 +1,9 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "Controller/MoveCtrl.h"
+#include "cocos2d.h"
+#include "Const/MapInfo.h"
 //#include "MovingActor/Knight.h"
-#include"MovingActor/HelloWorldScene.h"
 #include"MovingActor/TestMan.h"
 
 USING_NS_CC;
@@ -28,22 +29,22 @@ bool GameScene::init()
 
 	}
 
-	_visibleSize = Director::getInstance()->getVisibleSize();
-	_origin = Director::getInstance()->getVisibleOrigin();
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
 	loadingAnimation();
 	initMapLayer();
-	//initKnight();
+
+	initFighter();
+	initListener();
 	scheduleUpdate();
 
-	auto rocker = MoveController::createMoveController();
+	/*auto rocker = MoveController::createMoveController();
 	this->addChild(rocker);
-	_rocker = rocker;
+	_rocker = rocker;*/
 
-	Fighter* fighter;
-	fighter = Testman::create(this,"Ranger");
-	fighter->setPosition(512,384);
-	this->addChild(fighter);
-	_myFighter = fighter;
+
+
+	
 
 	/*敌人生成
 	for (int i = 0; i < 4; i++)
@@ -57,16 +58,65 @@ bool GameScene::init()
 
 
 
-	//创建键盘监听器
-    listenerKeyBoard = EventListenerKeyboard::create();
-    //绑定监听事件
-    listenerKeyBoard->onKeyPressed = CC_CALLBACK_2(GameScene::onPressKey, this);
-	listenerKeyBoard->onKeyReleased = CC_CALLBACK_2(GameScene::onReleaseKey, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerKeyBoard, this);
-	//listenerTouch->setSwallowTouches(false);
-
 
 	return true;
+}
+// https://blog.csdn.net/oyangyufu/article/details/26468973
+void GameScene::setViewpointCenter(CCPoint position)
+{
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();  
+	float x = MAX(position.x, winSize.width / 2);
+	float y = MAX(position.y, winSize.height / 2);  
+	x = MIN(x, (_map->getMapSize().width * _map->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (_map->getMapSize().height * _map->getTileSize().height) - winSize.height / 2); 	
+	CCPoint acturalPosition = ccp(x, y); 
+	CCPoint centerView = ccp(winSize.width / 2, winSize.height / 2);  
+	CCPoint viewPoint = ccpSub(centerView, acturalPosition);
+	this->setPosition(viewPoint);
+}
+
+void GameScene::setSpritePoint(CCPoint position)
+{
+	CCPoint tilecoord = this->tileCoordForPosition(position);//将坐标转换成tile坐标
+    CCTMXLayer* layer = _map->layerNamed("collision"); //获取地图层
+	int tilegid = layer->tileGIDAt(tilecoord);//获取图素GID值
+	CCLOG("tilegid: %d", tilegid);
+	if (tilegid)
+	{
+		CCDictionary* properties = _map->propertiesForGID(tilegid);//根据GID值获取图素属性键值集合
+		if (properties)
+		{
+			const CCString* str = properties->valueForKey("ShiTou");//键值名称
+			if (str && str->compare("true") == 0) 	 //键值
+			return;
+		}
+	}
+	fighter->setPosition(position);
+
+}
+void GameScene::initMapLayer()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
+	_map = CCTMXTiledMap::create("ArtDesigning/SceneAndMap/GameMap/GameMap1/GameMap1.tmx");
+	auto size = _map->getBoundingBox().size;
+	_map->setAnchorPoint(Vec2(0.5, 0.5));
+	_map->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	_map->setScale(0.5);
+
+	auto collisionLayer = _map->getLayer("collision");
+	collisionLayer->setVisible(false);
+
+	addChild(_map, 0, 10000);//TAG_MAP
+}
+
+
+CCPoint GameScene::tileCoordForPosition(CCPoint position)
+{
+	int x = position.x / _map->getTileSize().width;
+	int y = ((_map->getMapSize().height * _map->getTileSize().height) - position.y) / _map->getTileSize().height;
+	return ccp(x, y);
 }
 
 
@@ -86,17 +136,43 @@ void GameScene::initMapLayer()
 }
 
 //初始化主角,目前少角色类（在多角色可选的前提下）
-void GameScene::initKnight()
+void GameScene::initFighter()
 {
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	//_myKnight = HouYi::create(this, ECamp::BLUE, "HouYi", EAttackMode::MELEE);
-	_myKnight->setPosition(visibleSize / 2);
+	
 	//_myHero->setTag(TAG_MYHERO);
-	_myKnight->setScale(0.5);
-	_map->addChild(_myKnight);
+	
+	//玩家生成
+	//addFighter 源码 https://blog.csdn.net/u010778159/article/details/43956151?utm_medium=distribute.pc_relevant.none-task-blog-baidujs-2
+	CCSprite* playerSprite = CCSprite::create("ArtDesigning/Sprite/Fighter/downDir.png");
+	fighter = Testman::create(this, "Ranger");
+	fighter->bindSprite(playerSprite);
+	//加载对象层
+	CCTMXObjectGroup* objGroup = _map->objectGroupNamed("objects");
+	//加载玩家坐标对象
+	ValueMap  playerPointDic = objGroup->objectNamed("SpawnPoint");
+	float playerX = playerPointDic.at("x").asFloat();
+	float playerY = playerPointDic.at("y").asFloat();
+	CCLOG("sprite postion x: %f, %f", playerX, playerY);
+	fighter->setPosition(ccp(playerX, playerY));
+	_map->addChild(fighter, 1);
+	_myFighter = fighter;
+
+	updateFighterPosition();
+	CCPoint sp_point = fighter->getPosition();
+	setViewpointCenter(sp_point); //设置视图中心点
 }
 
+void GameScene::initListener()
+{
+	//创建键盘监听器
+	listenerKeyBoard = EventListenerKeyboard::create();
+	//绑定监听事件
+	listenerKeyBoard->onKeyPressed = CC_CALLBACK_2(GameScene::onPressKey, this);
+	listenerKeyBoard->onKeyReleased = CC_CALLBACK_2(GameScene::onReleaseKey, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerKeyBoard, this);
+}
 
 //加载动画（一个旋涡状）
 void GameScene::loadingAnimation()
@@ -105,14 +181,45 @@ void GameScene::loadingAnimation()
 }
 
 //更新主角位置
-void GameScene::updateKnightPosition()
+void GameScene::updateFighterPosition()
 {
-	_myFighter->setFDirection ( _rocker->getFirstDirection());
-	_myFighter->setLDriection(_rocker->getLastDirection());
-	_myFighter->setDirection(_rocker->getDirection());
-	_myFighter->fighterMove();
-	_myFighter->stand();
+	auto nowTime = GetCurrentTime() / 1000.f;
+	if (!_myFighter->getAlreadyDead())
+	{
+		_myFighter->setFDirection(_rocker->getFirstDirection());
+		_myFighter->setLDriection(_rocker->getLastDirection());
+		_myFighter->setDirection(_rocker->getDirection());
+		_myFighter->fighterMove();
+		_myFighter->stand();
+	}
+	auto newPosition = _myFighter->getPosition();
+	//碰撞检测
+	/*if (_mapInformation.checkCollision(newPosition))
+	{
+		_myFighter->fighterMove();
+		if (nowTime - _myFighter->getLastAttackTime() > _myFighter->getMinAttackInterval() && _myFighter->getVertigoLastTo() < nowTime)
+		{
+			_map->setPosition(_map->getPosition() - positionDelta);
+		}
+	}
+		else
+		{
+			_command.isHeroMove = true;
+		}
+	}
+	else
+	{
+		if (_gameMode == 0)
+		{
+			_myHero->stopMove();
+		}
+		else
+		{
+			_command.isHeroStopMove = true;
+		}
+	}*/
 }
+
 
 void GameScene::updateFlyingItem()
 {
@@ -127,7 +234,7 @@ void GameScene::updateFlyingItem()
 //帧更新
 void GameScene::update(float delta)
 {
-	updateKnightPosition();
+	updateFighterPosition();
 	updateFlyingItem();
 
 
