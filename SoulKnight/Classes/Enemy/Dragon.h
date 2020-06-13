@@ -17,6 +17,14 @@ public:
 	bool init(GameScene* Scene, std::string fighterName);
 	bool initData(GameScene* Scene, std::string fighterName);
 	bool loadAnimation();
+
+	virtual void chaosBullets();
+	virtual void roundBullets();
+	virtual void groundFlame();
+	virtual void 
+	//给可怜的龙放几个技能
+
+
 };
 
 

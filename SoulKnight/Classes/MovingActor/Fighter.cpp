@@ -183,7 +183,7 @@ void Fighter::hurt(INT32 damage)
 }
 
 
-void Fighter::fighterMove()      //
+Vec2 Fighter::updateDestination()      //
 {
 	isMoving = true;
 	Vec2 current = this->getPosition();
@@ -223,7 +223,13 @@ void Fighter::fighterMove()      //
 		break;
 	}
 	ldirection = direction;
-	this->setPosition(current);
+
+	return current;
+}
+
+void Fighter::fighterMove()
+{
+	this->setPosition(updateDestination());
 }
 
 void Fighter::stand()
