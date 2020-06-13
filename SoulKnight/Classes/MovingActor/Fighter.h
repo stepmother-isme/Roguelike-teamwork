@@ -5,11 +5,11 @@
 #include "MovingActor/MovingActor.h"
 #include "MovingActor/Constant.h"
 #include "MovingActor/Enemy.h"
-
+#include "MovingActor/Equipment.h"
 
 USING_NS_CC;
 
-class Equipment;
+
 
 class Fighter :public MovingActor
 {
@@ -56,6 +56,8 @@ public:
 	//virtual void takeBuff(Buff* buff);			//获得buff  TBD
 
 	virtual void releaseSkill();               //发起技能
+
+	virtual Vec2 updateDestination();
 
 	virtual void fighterMove();               //发起移动
 

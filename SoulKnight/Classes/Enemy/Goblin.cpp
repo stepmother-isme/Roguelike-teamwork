@@ -50,14 +50,14 @@ bool Goblin::initData(GameScene* Scene, std::string Name)
 
 bool Goblin::loadAnimation()
 {
-	Vector<SpriteFrame*> normalFrames;
+	cocos2d::Vector<SpriteFrame*> normalFrames;
 	for (int i = 0; i < 2; i++)
 	{
 		SpriteFrame* frame = NULL;
 		frame = SpriteFrameCache::sharedSpriteFrameCache()->
 			spriteFrameByName(CCString::createWithFormat("ArtDesigning/Sprite/Enemy/Goblin/Goblin%d.png", i)->
 				getCString());
-		normalFrames.pushBack(frame);
+		normalFrames.pushBack(normalFrames);
 	}
 	CCAnimation* normalAnimation = NULL;
 	normalAnimation = CCAnimation::createWithSpriteFrames(normalFrames, 1.0 / 15.0);

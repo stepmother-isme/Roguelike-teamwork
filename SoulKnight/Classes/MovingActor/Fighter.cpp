@@ -134,7 +134,7 @@ bool Fighter::attack()
 											currentWeapon->getAttackNumber(),
 											currentWeapon->getFlySpeed(),
 											this,
-											attackTarget);
+											NULL);
 
 		if (!isMoving)
 			bulletSprite->giveOut(ldirection);

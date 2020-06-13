@@ -21,7 +21,7 @@ public:
 	virtual void chaosBullets();
 	virtual void roundBullets();
 	virtual void groundFlame();
-	virtual void 
+	virtual void releaseSkill();
 	//给可怜的龙放几个技能
 
 

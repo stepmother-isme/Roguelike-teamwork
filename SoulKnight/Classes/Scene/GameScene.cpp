@@ -140,9 +140,9 @@ void GameScene::initFighter()
 	
 	//玩家生成
 	//addFighter 源码 https://blog.csdn.net/u010778159/article/details/43956151?utm_medium=distribute.pc_relevant.none-task-blog-baidujs-2
-	CCSprite* playerSprite = CCSprite::create("ArtDesigning/Sprite/Fighter/downDir.png");
+	CCSprite* playerSprite = CCSprite::create("ArtDesigning/Sprite/Fighter/KnightDown.png");
 	fighter = Testman::create(this, "Ranger");
-	fighter->bindSprite(playerSprite);
+	//fighter->bindSprite(playerSprite);
 	//加载对象层
 	CCTMXObjectGroup* objGroup = _map->objectGroupNamed("objects");
 	//加载玩家坐标对象

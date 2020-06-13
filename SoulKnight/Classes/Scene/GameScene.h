@@ -12,7 +12,6 @@
 USING_NS_CC;
 
 class Record;
-class MovingActor;
 
 class GameScene : public cocos2d::Scene
 {

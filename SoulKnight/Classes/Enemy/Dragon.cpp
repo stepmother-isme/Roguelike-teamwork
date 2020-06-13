@@ -65,3 +65,41 @@ bool Dragon::loadAnimation()
 
 	return true;
 }
+
+void Dragon::chaosBullets()
+{
+			auto angle = random(0, 361);
+			auto bulletSprite = Bullet::create(CCString::createWithFormat("ArtDesigning/FlyingItem/Bullet/%sBullet", enemyName)->getCString(), 2, flySpeed, this, NULL);
+			//bulletSprite->setRotation(360 - angle);
+			bulletSprite->setAngle(angle);
+			exploreScene->getMap()->addChild(bulletSprite);
+			exploreScene->flyingItem.pushBack(bulletSprite);
+}
+
+void Dragon::roundBullets()
+{
+	for (int i = 0; i < 20; i++)
+	{
+		auto angle = 18 * i;
+		auto bulletSprite = Bullet::create(CCString::createWithFormat("ArtDesigning/FlyingItem/Bullet/%sBullet", enemyName)->getCString(), 2, flySpeed, this, NULL);
+		//bulletSprite->setRotation(360 - angle);  龙的子弹是圆的好像不需要这一步		
+		bulletSprite->setAngle(angle);
+		exploreScene->getMap()->addChild(bulletSprite);
+		exploreScene->flyingItem.pushBack(bulletSprite);
+	}
+}
+
+void Dragon::groundFlame()
+{
+	Vec2 currentPosition;
+
+	currentPosition = exploreScene->getMyFighter()->getPosition();
+	auto flash = Sprite::create("ArtDesigning/FlyingItem/Bullet/Flame.png");
+	auto action = Sequence::createWithTwoActions(DelayTime::create(1.0f),
+														 Hide::create());
+	flash->runAction(action);
+	flash->setPosition(currentPosition);
+	exploreScene->addChild(flash);
+
+}
+
