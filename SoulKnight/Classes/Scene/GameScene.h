@@ -6,6 +6,7 @@
 #include "MovingActor/MovingActor.h"
 #include "MovingActor/Bullet.h"
 #include "Controller/MoveCtrl.h"
+#include "Const/MapInfo.h"
 #include <vector>
 
 USING_NS_CC;
@@ -60,7 +61,6 @@ private:
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
 	
-	void setViewpointCenter(CCPoint position);
 	void setSpritePoint(CCPoint position);
 	CCPoint tileCoordForPosition(CCPoint position);
 
@@ -70,6 +70,7 @@ public:
 	Vector<MovingActor*> enemySoldier;
 	Vector<MovingActor*> enemyBoss;
 	Vector<MovingActor*> allFighter;
+	Vector<Equipment*> allWeapon;
 	Vector<Bullet*> flyingItem;
 	//Vector<UnMovingActor*> allNpc;
 

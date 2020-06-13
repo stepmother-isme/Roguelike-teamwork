@@ -1,13 +1,13 @@
 #include"MovingActor/Enemy.h"
-#include"Enemy/Dragon.h"
+#include"Enemy/Goblin.h"
 #include"MovingActor/Constant.h"
 #include"MovingActor/Bullet.h"
 #include"Scene/GameScene.h"
 #include<vector>
 
-Dragon* Dragon::create(GameScene* Scene, std::string Name)
+Goblin* Goblin::create(GameScene* Scene, std::string Name)
 {
-	Dragon* enemy = new Dragon();
+	Goblin* enemy = new Goblin();
 	if (enemy && enemy->init(Scene, Name));
 	{
 		enemy->autorelease();
@@ -18,22 +18,22 @@ Dragon* Dragon::create(GameScene* Scene, std::string Name)
 	return nullptr;
 }
 
-bool Dragon::init(GameScene* Scene, std::string Name)
+bool Goblin::init(GameScene* Scene, std::string Name)
 {
-	if (!Enemy::init(Scene,Name))
+	if (!Enemy::init(Scene, Name))
 		return false;
 
 	initData(Scene, Name);
 	return true;
 }
 
-bool Dragon::initData(GameScene* Scene, std::string Name)
+bool Goblin::initData(GameScene* Scene, std::string Name)
 {
 	exploreScene = Scene;
 	enemyName = Name;
 	camp = AllCamp::ENEMY;
 
-	setTexture("ArtDesigning/Sprite/Enemy/Dragon/dragon1.png");
+	setTexture("ArtDesigning/Sprite/Enemy/Goblin/Goblin1.png");
 
 	alreadyDead = false;
 	attackSpeed = 0.f;
@@ -48,19 +48,19 @@ bool Dragon::initData(GameScene* Scene, std::string Name)
 	return true;
 }
 
-bool Dragon::loadAnimation()
+bool Goblin::loadAnimation()
 {
 	Vector<SpriteFrame*> normalFrames;
 	for (int i = 0; i < 2; i++)
 	{
 		SpriteFrame* frame = NULL;
 		frame = SpriteFrameCache::sharedSpriteFrameCache()->
-								  spriteFrameByName(CCString::createWithFormat("ArtDesigning/Sprite/Enemy/Dragon/dragon%d.png",i)->
-								  getCString());
+			spriteFrameByName(CCString::createWithFormat("ArtDesigning/Sprite/Enemy/Goblin/Goblin%d.png", i)->
+				getCString());
 		normalFrames.pushBack(frame);
 	}
 	CCAnimation* normalAnimation = NULL;
-	normalAnimation = CCAnimation::createWithSpriteFrames(normalFrames,1.0/15.0);
+	normalAnimation = CCAnimation::createWithSpriteFrames(normalFrames, 1.0 / 15.0);
 	this->setNormal(CCRepeatForever::create(CCAnimate::create(normalAnimation)));
 
 	return true;

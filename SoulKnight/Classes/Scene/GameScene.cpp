@@ -128,12 +128,7 @@ void GameScene::generateEnemies(float delta)
 
 
 
-//初始化地图!!!更改注意：房间还是地图
-void GameScene::initMapLayer()
-{
 
-
-}
 
 //初始化主角,目前少角色类（在多角色可选的前提下）
 void GameScene::initFighter()
