@@ -15,15 +15,15 @@ class MovingActor;
 
 class GameScene : public cocos2d::Scene
 {
-
+	Vector<Enemy*> _enemies;
 	/*
-	CC_SYNTHESIZE(varType, varName, funName)Õâ¸öºêÊÇÓÃÀ´
-	¶¨Òå±äÁ¿varName£¬ÆäÀàĞÍÎªvarType£¬²¢Éú³ÉÆäget/set·½·¨£¬·Ö±ğÎª£º
-		getfunName() ºÍ setfunName(varType var) ¡£
+	CC_SYNTHESIZE(varType, varName, funName)è¿™ä¸ªå®æ˜¯ç”¨æ¥
+	å®šä¹‰å˜é‡varNameï¼Œå…¶ç±»å‹ä¸ºvarTypeï¼Œå¹¶ç”Ÿæˆå…¶get/setæ–¹æ³•ï¼Œåˆ†åˆ«ä¸ºï¼š
+		getfunName() å’Œ setfunName(varType var) ã€‚
 	*/
 
-	//CC_SYNTHESIZE(Vector<Projectile*>, _bullets, Bullets);      ×Óµ¯
-	//CC_SYNTHESIZE(std::vector<Damage>, _damages, AllDamages);   ÉËº¦
+	//CC_SYNTHESIZE(Vector<Projectile*>, _bullets, Bullets);      å­å¼¹
+	//CC_SYNTHESIZE(std::vector<Damage>, _damages, AllDamages);   ä¼¤å®³
 	CC_SYNTHESIZE(Record*, _labelRecord, LabelRecord);
 	CC_SYNTHESIZE(Fighter*, _myFighter, MyFighter);
 	CC_SYNTHESIZE(MoveController*, _rocker, Rocker);
@@ -32,29 +32,33 @@ class GameScene : public cocos2d::Scene
 	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
 	//CC_SYNTHESIZE(MapInfo, _mapInformation, MapInformation);
 	cocos2d::TMXLayer* _collidable;
+	cocos2d::TMXLayer* _collidable2;
 	Fighter* fighter;
 private:
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	void generateEnemies(float delta);
 	void initMapLayer();
 	void initFighter();
 	void initListener();
-	//¸üĞÂ½ÇÉ«Î»ÖÃ
+	//æ›´æ–°è§’è‰²ä½ç½®
 	void updateFighterPosition();
+	void updateEnemyPosition();
 	void updateFlyingItem();
 
-	//¸üĞÂ¹¥»÷Ä¿±ê
+	bool _gameBegin;
+
+	//æ›´æ–°æ”»å‡»ç›®æ ‡
 	void updateEnemiesAttackTarget();
 
-	//¼àÌıÆ÷
+	//ç›‘å¬å™¨
 	EventListenerTouchOneByOne* listenerTouch;
 	EventListenerKeyboard* listenerKeyBoard;
 
-	//°´¼üÊÂ¼ş
+	//æŒ‰é”®äº‹ä»¶
 	virtual bool onPressKey(EventKeyboard::KeyCode keyCode, Event* event);
 	virtual bool onReleaseKey(EventKeyboard::KeyCode keyCode, Event* event);
 
-	//ÅĞ¶ÏÊÇ·ñÒ»Ö±±»°´×¡
+	//åˆ¤æ–­æ˜¯å¦ä¸€ç›´è¢«æŒ‰ä½
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 	bool isKeyPressed(EventKeyboard::KeyCode keyCode);
 	
@@ -63,7 +67,7 @@ private:
 
 
 public:
-	//¿ÉÒÔ¹«¿ªÊ¹ÓÃµÄÒ»Ğ©ÈİÆ÷
+	//å¯ä»¥å…¬å¼€ä½¿ç”¨çš„ä¸€äº›å®¹å™¨
 	Vector<MovingActor*> enemySoldier;
 	Vector<MovingActor*> enemyBoss;
 	Vector<MovingActor*> allFighter;
