@@ -40,11 +40,12 @@ private:
 	void initMapLayer();
 	void initFighter();
 	void initListener();
+	void initComp();
 	//更新角色位置
 	void updateFighterPosition();
 	void updateEnemyPosition();
 	void updateFlyingItem();
-
+	void updateComp();
 	bool _gameBegin;
 
 	//更新攻击目标
