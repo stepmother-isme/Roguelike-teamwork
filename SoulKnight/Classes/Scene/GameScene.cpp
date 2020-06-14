@@ -151,7 +151,31 @@ void GameScene::initListener()
 	listenerKeyBoard->onKeyReleased = CC_CALLBACK_2(GameScene::onReleaseKey, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerKeyBoard, this);
 }
-
+void GameScene::initComp()
+{
+	auto frame = Sprite::create("ArtDesigning/Word&Others/Comonent/CompBackground.png");
+	frame->setPosition(Vec2(0, 750));
+	this->addChild(frame);
+	auto blood = Sprite::create("ArtDesigning/Word&Others/Comonent/RedComp.png");
+	ProgressTimer* comp = ProgressTimer::create(blood);
+	comp->setType(ProgressTimer::Type::BAR);
+	comp->setPosition(Vec2(0, 750));
+	comp->setMidpoint(Vec2(0, 0.5));
+	comp->setTag(FRIENDLY);
+	comp->setBarChangeRate(Vec2(1, 0));
+	this->addChild(comp);
+}
+void GameScene::updateComp()
+{
+	auto myComp = (ProgressTimer*)this->getChildByTag(FRIENDLY);
+	myComp->setPercentage((((float)_myFighter->getCurHitPoints()) / _myFighter->getMaxHitpoints()) * 100);
+	if (!enemyBoss.empty())
+	{
+		auto it = enemyBoss.begin();
+		auto myComp = (ProgressTimer*)this->getChildByTag(ENEMY);
+		myComp->setPercentage((((float)(*it)->getCurHitPoints()) / (*it)->getCurHitPoints()) * 100);
+	}
+}
 //加载动画（一个旋涡状）
 void GameScene::loadingAnimation()
 {
